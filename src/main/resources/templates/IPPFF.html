@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Ingreso de Padres</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
+    <style>
+        body {
+            background-color: #f8f9fa; /* Agrega un color de fondo a la página */
+        }
+
+        .container {
+            margin-top: 50px; /* Ajusta el margen superior para centrar la tabla */
+        }
+        .option{
+		    width: 1000%;
+	   }
+    </style>
+</head>
+<body>
+    <button data-bs-toggle="modal" data-bs-target="#personalModal"
+        type="button" name="btn_nuevo" id="btn_nuevo" class="btn btn-info btn-lg">
+        Nuevo Ingreso
+    </button>
+    
+ <div class="container mt-4">    
+     <div class="modal fade" id="personalModal"  role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="personalModalLabel">Nuevo Personal</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Formulario para agregar/editar personal -->
+    
+                        <form th:action="@{/saveIPPFF}" th:object="${Ippff}" method="POST">
+                            <!-- Campos del formulario -->
+                            <div class="form-group">
+                                <label>Id Ingreso</label>
+                                <input th:field="*{id_ingresoPPFF}" type="text" readonly="false" 
+                                    class="form-control" />
+                            </div>
+                            
+                            
+							<div class="form-group">
+                            	<label>Datos del Padre</label>
+                           			 <select id="id_ppff" th:field="*{id_ppff}" class="form-control select2 custom-select-width" title="Selecciona un nombre">
+                                		<option th:each="ppff : ${ppffs}" th:value="${ppff.id_ppff}"
+                                		 th:text="${ppff.nombre_ppff+ ' '+ppff.apellido_ppff+ ' '+ppff.dni+
+                                		  ' '+ppff.nombre_alu+ ' '+ppff.apellido_alu+ ' '+ppff.año_alu}"></option>
+                           			 </select>
+                       		</div>
+                       		
+                       		
+                            <div class="form-group">
+                                <label>fecha</label>
+                                <input th:field="*{fecha}" type="date" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label>Hora de Ingreso</label>
+                                <input th:field="*{hora_ingreso}" type="time" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label>Hora de Salida</label>
+                                <input th:field="*{hora_salida}" type="time" class="form-control" />
+                            </div>
+                            <div class="form-group">
+								<label>Asunto</label>
+								<input th:field="*{asunto}" type="text" class="form-control" />
+							</div>
+                            <!-- Otros campos -->
+    
+                            <!-- Botón de guardar en el modal -->
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <h2 class="text-center mb-4">Lista de PadresColegio</h2>
+        
+        <br>
+        <table id="tablaPersonal" class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Numero</th>
+                    <th>Datos del Padre</th>
+                    <th>Fecha</th>
+                    <th>Hora de Ingreso</th>
+                    <th>Hora de Salida</th>
+                    <th>Asunto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <!-- Agrega este formulario encima de la tabla para ingresar la fecha -->
+<form th:action="@{/listarIPPFF}" method="GET">
+    <div class="form-group">
+        <label for="fechaBusqueda">Ingrese la fecha:</label>
+        <input type="date" class="form-control" id="fechaBusqueda" name="fechaBusqueda" required/>
+    </div>
+    <button type="submit" class="btn btn-primary">Buscar</button>
+    
+</form>
+
+<!-- Resto de tu código HTML -->
+
+<!-- Modifica la iteración sobre la lista para usar la nueva lista -->
+<tbody>
+    <tr th:each="Ippff, row : ${IppffsPorFecha}">
+        <td th:text="${row.index + 1}"></td>
+        <td th:text="${Ippff.objPPFF.nombre_ppff+' '+Ippff.objPPFF.apellido_ppff+' '+Ippff.objPPFF.dni+' '+
+        Ippff.objPPFF.nombre_alu+' '+Ippff.objPPFF.apellido_alu+' '+Ippff.objPPFF.año_alu}"></td>
+        <td th:text="${Ippff.fecha}"></td>
+        <td th:text="${Ippff.hora_ingreso}"></td>
+        <td th:text="${Ippff.hora_salida}"></td>
+        <td th:text="${Ippff.asunto}"></td>
+        <td>
+            <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#personalModal"
+                th:data-id="${Ippff.id_ingresoPPFF}">
+                <i class="bi bi-pencil"></i>
+            </a>
+            <a th:href="@{/eliminarIPPFF/}+${Ippff.id_ingresoPPFF}" class="btn btn-danger"
+                onclick="return confirm('¿Estás seguro de que deseas eliminar este empleado?')">
+                <i class="bi bi-trash"></i>
+            </a>
+        </td>
+    </tr>
+      
+</tbody>
+        </table>  
+           <h3>Registros por día: <span th:text="${contadorRegistros}"></span></h3>
+     </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Manejar el evento de apertura del modal
+        $('#personalModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id_ingresoPPFF = button.data('id');
+
+            if (id_ingresoPPFF !== undefined) {
+                // Realizar una solicitud AJAX solo si hay un ID definido (editar)
+                $.get('/editarIPPFF/' + id_ingresoPPFF + '/json', function (data) {
+                    // Actualizar los campos del formulario en el modal con los datos obtenidos
+                    $('#id_ingresoPPFF').val(data.id_ingresoPPFF);
+                    $('#id_ppff').val(data.id_ppff).trigger('change');
+                    $('#fecha').val(data.fecha);
+                    $('#hora_ingreso').val(data.hora_ingreso);
+                    $('#hora_salida').val(data.hora_salida);
+                    $('#asunto').val(data.asunto);
+                });
+            } else {
+                // Limpiar los campos si no hay un ID definido (nuevo)
+                
+                $('#fecha').val('');
+                $('#hora_ingreso').val('');
+                $('#hora_salida').val('');
+                $('#asunto').val('');
+            }
+        });
+       
+    });
+</script>
+ <script>
+        
+    $('#id_ppff').select2({
+    dropdownParent: $('#personalModal'),
+   	width: '100%'
+});
+    </script>
+</body>
+
+</html>
