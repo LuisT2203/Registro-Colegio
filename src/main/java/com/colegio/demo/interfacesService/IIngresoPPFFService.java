@@ -1,5 +1,6 @@
 package com.colegio.demo.interfacesService;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,4 +12,5 @@ public interface IIngresoPPFFService {
 	public Optional<IngresoPPFF>listarId(int id_ingresoPPFF);
 	public int Guardar(IngresoPPFF IPF); //Ingreso Padre de Familia 
 	public void Borrar(int id_ingresoPPFF);
+	List<IngresoPPFF> listarIngresoPPFFPorFecha(Date fecha);
 }

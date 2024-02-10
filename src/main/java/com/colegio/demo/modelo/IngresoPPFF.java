@@ -1,8 +1,11 @@
 package com.colegio.demo.modelo;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,23 +20,32 @@ public class IngresoPPFF {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_ingresoPPFF;
 	private int id_ppff; //llave foranea para hacer referencia al objeto ppff, (No olvidar crear el objeto manytoone para manejar los datos)
+	@Column(name = "fecha")
 	private Date fecha;
-	private Time hora_ingreso;
-	private Time hora_salida;
+	private LocalTime hora_ingreso;
+	private LocalTime hora_salida;
 	private String asunto;
+	private int numeroRegistro;
 	
 	public IngresoPPFF() {
 		super();
 	}
 
-	public IngresoPPFF(int id_ingresoPPFF, Date fecha, Time hora_ingreso, Time hora_salida, String asunto) {
+	
+
+	public IngresoPPFF(int id_ingresoPPFF, int id_ppff, Date fecha, LocalTime hora_ingreso, LocalTime hora_salida, String asunto,
+			int numeroRegistro) {
 		super();
 		this.id_ingresoPPFF = id_ingresoPPFF;
+		this.id_ppff = id_ppff;
 		this.fecha = fecha;
 		this.hora_ingreso = hora_ingreso;
 		this.hora_salida = hora_salida;
 		this.asunto = asunto;
+		this.numeroRegistro = numeroRegistro;
 	}
+
+
 
 	public int getId_ingresoPPFF() {
 		return id_ingresoPPFF;
@@ -51,19 +63,19 @@ public class IngresoPPFF {
 		this.fecha = fecha;
 	}
 
-	public Time getHora_ingreso() {
+	public LocalTime getHora_ingreso() {
 		return hora_ingreso;
 	}
 
-	public void setHora_ingreso(Time hora_ingreso) {
+	public void setHora_ingreso(LocalTime hora_ingreso) {
 		this.hora_ingreso = hora_ingreso;
 	}
 
-	public Time getHora_salida() {
+	public LocalTime getHora_salida() {
 		return hora_salida;
 	}
 
-	public void setHora_salida(Time hora_salida) {
+	public void setHora_salida(LocalTime hora_salida) {
 		this.hora_salida = hora_salida;
 	}
 
@@ -82,7 +94,7 @@ public class IngresoPPFF {
 	public void setId_ppff(int id_ppff) {
 		this.id_ppff = id_ppff;
 	}
-	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="id_ppff", insertable=false,updatable=false)
 	private PPFF objPPFF;
@@ -93,6 +105,14 @@ public class IngresoPPFF {
 
 	public void setObjPPFF(PPFF objPPFF) {
 		this.objPPFF = objPPFF;
+	}
+
+	public int getNumeroRegistro() {
+		return numeroRegistro;
+	}
+
+	public void setNumeroRegistro(int numeroRegistro) {
+		this.numeroRegistro = numeroRegistro;
 	}
 	
 	
