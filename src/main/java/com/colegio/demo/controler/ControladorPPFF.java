@@ -48,7 +48,7 @@ public class ControladorPPFF {
 	public String guardar(@Validated PPFF p, Model model) {
 		model.addAttribute("ppff",new PPFF());
 		service.Guardar(p);
-		return "redirect:/listarPPFF";
+		return "redirect:/listarIPPFF";
 	}
 	@GetMapping("/editarPPFF/{Id_ppff}")
 	public String editar(@PathVariable int Id_ppff, Model model) {
@@ -72,6 +72,7 @@ public class ControladorPPFF {
 	public String listarI(@RequestParam(name = "fechaBusqueda", required = false) String fechaBusqueda, Model model) {
 
 		List<PPFF>ppffs = service.listarPPFF(); // lista de personal de Personal Colegio
+		model.addAttribute("ppff",new PPFF());
 		model.addAttribute("Ippff",new IngresoPPFF());//Objeto vacio para crear nuevos registros		
 		model.addAttribute("ppffs", ppffs); //agregando al modelo la lista de personal colegio para manipular los nombres
 
@@ -105,6 +106,7 @@ public class ControladorPPFF {
 	@PostMapping("/saveIPPFF")
 	public String guardarI(@Validated IngresoPPFF ip, Model model) {
 		model.addAttribute("Ippff",new IngresoPPFF());
+		model.addAttribute("ppff",new PPFF());
 		serviceI.Guardar(ip);
 		return "redirect:/listarIPPFF";
 	}

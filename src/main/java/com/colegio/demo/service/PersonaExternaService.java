@@ -1,4 +1,5 @@
 package com.colegio.demo.service;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.colegio.demo.interfaces.IPersonaExterna;
 import com.colegio.demo.interfacesService.IPersonaExternaService;
+
 import com.colegio.demo.modelo.PersonaExterna;
 
 
@@ -38,5 +40,7 @@ public class PersonaExternaService implements IPersonaExternaService {
 		data.deleteById(id_personaE);
 		
 	}
+
+	
 
 }

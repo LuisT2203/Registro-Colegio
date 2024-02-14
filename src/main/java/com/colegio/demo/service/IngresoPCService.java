@@ -1,13 +1,13 @@
 package com.colegio.demo.service;
 import java.sql.Date;
-import java.time.LocalDate;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.colegio.demo.interfaces.IIngresoPC;
-import com.colegio.demo.interfaces.IPersonalColegio;
+
 import com.colegio.demo.interfacesService.IIngresoPersonalColegioService;
 import com.colegio.demo.modelo.IngresoPersonalColegio;
 
@@ -45,5 +45,10 @@ public class IngresoPCService implements IIngresoPersonalColegioService {
 	@Override
 	public List<IngresoPersonalColegio> listarIngresoPCPorFecha(Date fecha) {
 	    return data.listarIngresoPCPorFecha(fecha);
+	}
+
+	@Override
+	public List<IngresoPersonalColegio> BuscarPersonalId(int id_personal) {
+		return data.BuscarPersonalId(id_personal);
 	}
 }

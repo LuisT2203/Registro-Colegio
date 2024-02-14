@@ -13,4 +13,7 @@ public interface IIngresoPC extends CrudRepository<IngresoPersonalColegio, Integ
 	// Query personalizado para obtener ingresos por fecha
     @Query("SELECT i FROM IngresoPersonalColegio i WHERE i.fecha = :fecha")
     List<IngresoPersonalColegio> listarIngresoPCPorFecha(@Param("fecha") Date fecha);
+    
+    @Query("SELECT ipc FROM IngresoPersonalColegio ipc WHERE ipc.id_personal = :id_personal")
+    List<IngresoPersonalColegio> BuscarPersonalId(@Param("id_personal") int id_personal);
 }

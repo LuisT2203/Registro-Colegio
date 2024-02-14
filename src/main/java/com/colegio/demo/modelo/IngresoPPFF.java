@@ -1,6 +1,6 @@
 package com.colegio.demo.modelo;
 import java.sql.Date;
-import java.sql.Time;
+
 import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -19,7 +19,8 @@ public class IngresoPPFF {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_ingresoPPFF;
-	private int id_ppff; //llave foranea para hacer referencia al objeto ppff, (No olvidar crear el objeto manytoone para manejar los datos)
+	 //llave foranea para hacer referencia al objeto ppff, (No olvidar crear el objeto manytoone para manejar los datos)
+	private int id_ppff;
 	@Column(name = "fecha")
 	private Date fecha;
 	private LocalTime hora_ingreso;
@@ -32,9 +33,8 @@ public class IngresoPPFF {
 	}
 
 	
-
-	public IngresoPPFF(int id_ingresoPPFF, int id_ppff, Date fecha, LocalTime hora_ingreso, LocalTime hora_salida, String asunto,
-			int numeroRegistro) {
+	public IngresoPPFF(int id_ingresoPPFF, int id_ppff, Date fecha, LocalTime hora_ingreso, LocalTime hora_salida,
+			String asunto, int numeroRegistro, PPFF objPPFF) {
 		super();
 		this.id_ingresoPPFF = id_ingresoPPFF;
 		this.id_ppff = id_ppff;
@@ -43,8 +43,23 @@ public class IngresoPPFF {
 		this.hora_salida = hora_salida;
 		this.asunto = asunto;
 		this.numeroRegistro = numeroRegistro;
+		this.objPPFF = objPPFF;
 	}
 
+
+
+
+
+
+
+	public int getId_ppff() {
+		return id_ppff;
+	}
+
+
+	public void setId_ppff(int id_ppff) {
+		this.id_ppff = id_ppff;
+	}
 
 
 	public int getId_ingresoPPFF() {
@@ -87,16 +102,10 @@ public class IngresoPPFF {
 		this.asunto = asunto;
 	}
 
-	public int getId_ppff() {
-		return id_ppff;
-	}
-
-	public void setId_ppff(int id_ppff) {
-		this.id_ppff = id_ppff;
-	}
+	
 	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name="id_ppff", insertable=false,updatable=false)
+	@JoinColumn(name="id_ppff",insertable=false,updatable=false)
 	private PPFF objPPFF;
 
 	public PPFF getObjPPFF() {

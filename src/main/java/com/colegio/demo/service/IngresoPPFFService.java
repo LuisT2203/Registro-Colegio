@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.colegio.demo.interfaces.IIngresoPPFF;
 import com.colegio.demo.interfacesService.IIngresoPPFFService;
 import com.colegio.demo.modelo.IngresoPPFF;
-import com.colegio.demo.modelo.IngresoPersonalColegio;
+
 
 
 @Service 

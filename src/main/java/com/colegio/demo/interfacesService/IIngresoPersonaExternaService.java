@@ -1,5 +1,6 @@
 package com.colegio.demo.interfacesService;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,4 +12,5 @@ public interface IIngresoPersonaExternaService {
 	public Optional<IngresoPersonaExterna>listarId(int id_ingresoPersonaE);
 	public int Guardar(IngresoPersonaExterna IPE); //Ingreso Padre de Familia 
 	public void Borrar(int id_ingresoPersonaE);
+	List<IngresoPersonaExterna> listarIngresoPEPorFecha(Date fecha);
 }

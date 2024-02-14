@@ -1,4 +1,5 @@
 package com.colegio.demo.service;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,12 @@ public class IngresoPEService implements IIngresoPersonaExternaService {
 	public void Borrar(int id_ingresoPersonaE) {
 		data.deleteById(id_ingresoPersonaE);
 		
+	}
+
+	@Override
+	public List<IngresoPersonaExterna> listarIngresoPEPorFecha(Date fecha) {
+		// TODO Auto-generated method stub
+		return data.listarIngresoPEPorFecha(fecha);
 	}
 
 }

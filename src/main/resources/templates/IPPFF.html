@@ -41,8 +41,8 @@
                         <form th:action="@{/saveIPPFF}" th:object="${Ippff}" method="POST">
                             <!-- Campos del formulario -->
                             <div class="form-group">
-                                <label>Id Ingreso</label>
-                                <input th:field="*{id_ingresoPPFF}" type="text" readonly="false" 
+                                
+                                <input th:field="*{id_ingresoPPFF}" type="hidden" readonly="false" 
                                     class="form-control" />
                             </div>
                             
@@ -82,7 +82,61 @@
                 </div>
             </div>
         </div>
-        
+        <button data-bs-toggle="modal" data-bs-target="#personalModal1" type="button" name="btn_nuevo" id="btn_nuevo"
+		class="btn btn-info btn-lg">
+		Nuevo
+	</button>
+
+	<div class="container mt-4">
+		<div class="modal fade" id="personalModal1" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="personalModalLabel1">Nuevo Personal</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<!-- Formulario para agregar/editar personal -->
+
+						<form th:action="@{/savePPFF}" th:object="${ppff}" method="POST">
+							<!-- Campos del formulario -->
+							<div class="form-group">
+								
+								<input th:field="*{id_ppff}" type="hidden" readonly="false" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label>Nombre Padre de Familia</label>
+								<input th:field="*{nombre_ppff}" type="text" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label>Apellido Padre de Familia</label>
+								<input th:field="*{apellido_ppff}" type="text" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label>DNI Padre de Familia</label>
+								<input th:field="*{dni}" type="text" class="form-control" />
+							</div>					
+							<div class="form-group">
+								<label>Nombre Alumna</label>
+								<input th:field="*{nombre_alu}" type="text" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label>Apellido Alumna</label>
+								<input th:field="*{apellido_alu}" type="text" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label>Año Alumna</label>
+								<input th:field="*{año_alu}" type="text" class="form-control" />
+							</div>
+							<!-- Otros campos -->
+
+							<!-- Botón de guardar en el modal -->
+							<button type="submit" class="btn btn-success">Guardar</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
         
         
         <h2 class="text-center mb-4">Lista de PadresColegio</h2>
@@ -116,8 +170,8 @@
 <tbody>
     <tr th:each="Ippff, row : ${IppffsPorFecha}">
         <td th:text="${row.index + 1}"></td>
-        <td th:text="${Ippff.objPPFF.nombre_ppff+' '+Ippff.objPPFF.apellido_ppff+' '+Ippff.objPPFF.dni+' '+
-        Ippff.objPPFF.nombre_alu+' '+Ippff.objPPFF.apellido_alu+' '+Ippff.objPPFF.año_alu}"></td>
+        <td th:text="${Ippff.objPPFF.nombre_ppff+' '+Ippff.objPPFF.apellido_ppff+' '+Ippff.objPPFF.dni+'( '+
+        Ippff.objPPFF.nombre_alu+' '+Ippff.objPPFF.apellido_alu+' '+Ippff.objPPFF.año_alu+')'}"></td>
         <td th:text="${Ippff.fecha}"></td>
         <td th:text="${Ippff.hora_ingreso}"></td>
         <td th:text="${Ippff.hora_salida}"></td>
@@ -144,33 +198,41 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function () {
-        // Manejar el evento de apertura del modal
-        $('#personalModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var id_ingresoPPFF = button.data('id');
+    // Manejar el evento de apertura del modal
+    $('#personalModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id_ingresoPPFF = button.data('id');
 
-            if (id_ingresoPPFF !== undefined) {
-                // Realizar una solicitud AJAX solo si hay un ID definido (editar)
-                $.get('/editarIPPFF/' + id_ingresoPPFF + '/json', function (data) {
-                    // Actualizar los campos del formulario en el modal con los datos obtenidos
-                    $('#id_ingresoPPFF').val(data.id_ingresoPPFF);
-                    $('#id_ppff').val(data.id_ppff).trigger('change');
-                    $('#fecha').val(data.fecha);
-                    $('#hora_ingreso').val(data.hora_ingreso);
-                    $('#hora_salida').val(data.hora_salida);
-                    $('#asunto').val(data.asunto);
-                });
-            } else {
-                // Limpiar los campos si no hay un ID definido (nuevo)
-                
-                $('#fecha').val('');
-                $('#hora_ingreso').val('');
-                $('#hora_salida').val('');
-                $('#asunto').val('');
-            }
-        });
-       
+        if (id_ingresoPPFF !== undefined) {
+            // Realizar una solicitud AJAX solo si hay un ID definido (editar)
+            $.get('/editarIPPFF/' + id_ingresoPPFF + '/json', function (data) {
+                console.log('Datos recibidos:', data);
+
+                // Obtener el ID del padre de familia
+               
+                console.log('ID del padre de familia:',data.id_ppff);
+
+                // Actualizar los demás campos del formulario en el modal con los datos obtenidos
+                                          
+                $('#id_ingresoPPFF').val(data.id_ingresoPPFF);
+                $('#id_ppff').val(data.id_ppff).trigger('change');  
+                $('#fecha').val(data.fecha);
+                $('#hora_ingreso').val(data.hora_ingreso);
+                $('#hora_salida').val(data.hora_salida);
+                $('#asunto').val(data.asunto);
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                console.error('Error en la solicitud AJAX:', textStatus, errorThrown);
+            });
+        } else {
+            // Limpiar los campos si no hay un ID definido (nuevo)
+            $('#id_ingresoPPFF').val('0');
+            $('#fecha').val('');
+            $('#hora_ingreso').val('');
+            $('#hora_salida').val('');
+            $('#asunto').val('');
+        }
     });
+});
 </script>
  <script>
         
@@ -179,6 +241,19 @@
    	width: '100%'
 });
     </script>
+<script>
+		$(document).ready(function () {
+			// Manejar el evento de apertura del modal
+			$('#personalModal1').on('show.bs.modal', function (event) {
+				var button = $(event.relatedTarget); // Botón que activó el modal
+				var id_ppff = button.data('id'); // Extraer el ID del personal
+
+				
+			});
+		});
+	</script>
+
+    
 </body>
 
 </html>

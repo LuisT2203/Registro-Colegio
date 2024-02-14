@@ -19,6 +19,7 @@ public class IngresoPersonalColegio {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_ingresoPersonal;
+	@Column(name = "id_personal")
 	private int id_personal; //llave foranea para hacer referencia al objeto personalColegio, (No olvidar crear el objeto manytoone para manejar los datos)
 	@Column(name = "fecha")
 	private Date fecha;
