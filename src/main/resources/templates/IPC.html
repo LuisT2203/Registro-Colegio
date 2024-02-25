@@ -1,222 +1,298 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Lista de Ingreso de Personal</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
-    <style>
-        body {
-            background-color: #f8f9fa; /* Agrega un color de fondo a la página */
-        }
+	<meta charset="UTF-8">
+	<title>Lista de Ingreso de Personal</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+		integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
+	<link rel="stylesheet" href="/css/style3.css">
+	<style>
+		body {
+			background-color: #f8f9fa;
+			/* Agrega un color de fondo a la página */
+		}
 
-        .container {
-            margin-top: 50px; /* Ajusta el margen superior para centrar la tabla */
-        }
-        .option{
-		    width: 1000%;
-	   }
-    </style>
+		.container {
+			margin-top: 50px;
+			/* Ajusta el margen superior para centrar la tabla */
+		}
+
+		.option {
+			width: 1000%;
+		}
+	</style>
 </head>
+
 <body>
-    <button data-bs-toggle="modal" data-bs-target="#personalModal"
-        type="button" name="btn_nuevo" id="btn_nuevo" class="btn btn-info btn-lg">
-        Nuevo
-    </button>
-    
- <div class="container mt-4">    
-     <div class="modal fade" id="personalModal"  role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="personalModalLabel">Nuevo Personal</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Formulario para agregar/editar personal -->
-    
-                        <form th:action="@{/saveIPC}" th:object="${Ipc}" method="POST">
-                            <!-- Campos del formulario -->
-                            <div class="form-group">
-                                
-                                <input th:field="*{id_ingresoPersonal}" type="hidden" readonly="false" 
-                                    class="form-control" />
-                            </div>
-                            
-                            
+
+
+	<div class="container mt-4">
+		<div class="modal fade" id="personalModal" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="personalModalLabel">Nuevo Personal</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<!-- Formulario para agregar/editar personal -->
+
+						<form th:action="@{/saveIPC}" th:object="${Ipc}" method="POST">
+							<!-- Campos del formulario -->
 							<div class="form-group">
-                            	<label>Nombre de Personal</label>
-                           			 <select id="id_personal" th:field="*{id_personal}" class="form-control select2 custom-select-width" title="Selecciona un nombre">
-                                		<option th:each="pc : ${pcs}" th:value="${pc.id_personal}" th:text="${pc.nombre_personal + ' '+  pc.apellido_personal}"></option>
-                           			 </select>
-                       		</div>
-                       		
-                       		
-                            <div class="form-group">
-                                <label>fecha</label>
-                                <input th:field="*{fecha}" type="date" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label>Hora de Ingreso</label>
-                                <input th:field="*{hora_ingreso}" type="time" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label>Hora de Salida</label>
-                                <input th:field="*{hora_salida}" type="time" class="form-control" />
-                            </div>
-                            <!-- Otros campos -->
-    
-                            <!-- Botón de guardar en el modal -->
-                            <button type="submit" class="btn btn-success">Guardar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        
-        
-        <h2 class="text-center mb-4">Lista de Personal Colegio</h2>
-        <form th:action="@{/listarIngresoPC}" method="GET">
-    <div class="form-group">
-        <select id="id_personal" name="id_personal" class="form-control select2 custom-select-width"
-                title="Selecciona un nombre">
-            <option th:each="pc : ${pcs}" th:value="${pc.id_personal}"
-                    th:text="${pc.nombre_personal + ' ' + pc.apellido_personal}"></option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Buscar</button>
-</form>
-        <br>
-        <table id="tablaPersonal" class="table table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>Numero</th>
-                    <th>Nombres</th>
-                    <th>Fecha</th>
-                    <th>Hora de Ingreso</th>
-                    <th>Hora de Salida</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <!-- Agrega este formulario encima de la tabla para ingresar la fecha -->
-<form th:action="@{/listarIngresoPC}" method="GET">
-    <div class="form-group">
-        <label for="fechaBusqueda">Ingrese la fecha:</label>
-        <input type="date" class="form-control" id="fechaBusqueda" name="fechaBusqueda" required/>
-    </div>
-    <button type="submit" class="btn btn-primary">Buscar</button>
-    
-</form>
-<!--<form th:action="@{/buscarIPC}" method="GET">
-    <div class="form-group">
-        <select id="id_personal" name="id_personal" class="form-control select2 custom-select-width"
-                title="Selecciona un nombre">
-            <option th:each="pc : ${pcs}" th:value="${id_personal}"
-                    th:text="${pc.nombre_personal + ' ' + pc.apellido_personal}"></option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Buscar</button>
-</form>
 
--->
-<!-- Resto de tu código HTML -->
+								<input th:field="*{id_ingresoPersonal}" type="hidden" readonly="false"
+									class="form-control" />
+							</div>
 
-<!-- Modifica la iteración sobre la lista para usar la nueva lista -->
-<form th:action="@{/listarIngresoPC}" method="GET">
-    <div class="form-group">
-      <label> ID</lab>
-      <input  type="text" class="form-control" id="id_personal" name="id_personal" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Buscar</button>
-</form>
-<tbody>
-    <tr th:each="Ipc, row : ${IpcsPorFecha}">
-        <td th:text="${row.index + 1}"></td>
-        <td th:text="${Ipc.objPersonal.nombre_personal+' '+Ipc.objPersonal.apellido_personal}"></td>
-        <td th:text="${Ipc.fecha}"></td>
-        <td th:text="${Ipc.hora_ingreso}"></td>
-        <td th:text="${Ipc.hora_salida}"></td>
-        <td>
-            <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#personalModal"
-                th:data-id="${Ipc.id_ingresoPersonal}">
-                <i class="bi bi-pencil"></i>
-            </a>
-            <a th:href="@{/eliminarIPC/}+${Ipc.id_ingresoPersonal}" class="btn btn-danger"
-                onclick="return confirm('¿Estás seguro de que deseas eliminar este empleado?')">
-                <i class="bi bi-trash"></i>
-            </a>
-        </td>
-    </tr>
-      
-</tbody>
-<tbody>
-    <tr th:each="Ipc, row : ${IpcsporID}">
-        <td th:text="${row.index + 1}"></td>
-        <td th:text="${Ipc.objPersonal.nombre_personal+' '+Ipc.objPersonal.apellido_personal}"></td>
-        <td th:text="${Ipc.fecha}"></td>
-        <td th:text="${Ipc.hora_ingreso}"></td>
-        <td th:text="${Ipc.hora_salida}"></td>
-        <td>
-            <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#personalModal"
-                th:data-id="${Ipc.id_ingresoPersonal}">
-                <i class="bi bi-pencil"></i>
-            </a>
-            <a th:href="@{/eliminarIPC/}+${Ipc.id_ingresoPersonal}" class="btn btn-danger"
-                onclick="return confirm('¿Estás seguro de que deseas eliminar este empleado?')">
-                <i class="bi bi-trash"></i>
-            </a>
-        </td>
-    </tr>
-      
-</tbody>
-        </table>  
-           <h3>Registros por día: <span th:text="${contadorRegistros}"></span></h3>
-			<h3>Registros por ID: <span th:text="${contadorRegistrosID}"></span></h3>
-     </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // Manejar el evento de apertura del modal
-        $('#personalModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var id_ingresoPersonal = button.data('id');
+							<div class="form-group">
+								<label>Nombre de Personal</label>
+								<select id="id_personal" th:field="*{id_personal}"
+									class="form-control select2 custom-select-width" title="Selecciona un nombre">
+									<option th:each="pc : ${pcs}" th:value="${pc.id_personal}"
+										th:text="${pc.nombre_personal + ' '+  pc.apellido_personal}"></option>
+								</select>
+							</div>
 
-            if (id_ingresoPersonal !== undefined) {
-                // Realizar una solicitud AJAX solo si hay un ID definido (editar)
-                $.get('/editarIPC/' + id_ingresoPersonal + '/json', function (data) {
-                    // Actualizar los campos del formulario en el modal con los datos obtenidos
-                    console.log('ID del padre de familia:', data.id_personal);
-                    $('#id_ingresoPersonal').val(data.id_ingresoPersonal);
-                    $('#id_personal').val(data.id_personal).trigger('change');
-                    $('#fecha').val(data.fecha);
-                    $('#hora_ingreso').val(data.hora_ingreso);
-                    $('#hora_salida').val(data.hora_salida);
-                });
-            } else {
-                // Limpiar los campos si no hay un ID definido (nuevo)
-                $('#id_ingresoPersonal').val('0');
-                $('#fecha').val('');
-                $('#hora_ingreso').val('');
-                $('#hora_salida').val('');
-            }
-        });
-       
-    });
-</script>
- <script>
-        
-    $('#id_personal').select2({
-    dropdownParent: $('#personalModal'),
-   	width: '80%'
-});
-    </script>
+
+							<div class="form-group">
+								<label>fecha</label>
+								<input th:field="*{fecha}" type="date" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label>Hora de Ingreso</label>
+								<input th:field="*{hora_ingreso}" type="time" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label>Hora de Salida</label>
+								<input th:field="*{hora_salida}" type="time" class="form-control" />
+							</div>
+							<!-- Otros campos -->
+
+							<!-- Botón de guardar en el modal -->
+							<button type="submit" class="btn btn-success">Guardar</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="personalModal1" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="personalModalLabel">Nuevo Personal</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<!-- Formulario para agregar/editar personal -->
+
+						<form th:action="@{/savePC}" th:object="${pc}" method="POST">
+							<!-- Campos del formulario -->
+							<div class="form-group">
+
+								<input th:field="*{id_personal}" type="hidden" readonly="false" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label>Nombre Personal</label>
+								<input th:field="*{nombre_personal}" type="text" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label>Apellido Personal</label>
+								<input th:field="*{apellido_personal}" type="text" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label>Cargo Personal</label>
+								<input th:field="*{cargo_personal}" type="text" class="form-control" />
+							</div>
+							<!-- Otros campos -->
+
+							<!-- Botón de guardar en el modal -->
+							<button type="submit" class="btn btn-success">Guardar</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<h2 class="text-center mb-4">Lista de Personal Colegio</h2>
+		<br>
+		<div clas="buscar" style="display: flex">
+			<div class="container1">
+				<div class="row justify-content-start">
+					<div class="col-md-6-start">
+						<form th:action="@{/listarIngresoPC}" method="GET">
+							<div class="form-group">
+								<label for="fechaBusqueda">Buscar por nombre</label>
+								<select id="id_personalA" name="id_personal"
+									class="form-control select2 custom-select-width" title="Selecciona un nombre">
+									<option th:each="pc : ${pcs}" th:value="${pc.id_personal}"
+										th:text="${pc.nombre_personal + ' ' + pc.apellido_personal}"></option>
+								</select>
+							</div>
+							<button type="submit" class="btn btn-primary">Buscar</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="container2">
+				<div class="row justify-content-start">
+					<div class="col-md-6-start">
+						<form th:action="@{/listarIngresoPC}" method="GET">
+							<div class="form-group">
+								<label for="fechaBusqueda">Ingrese la fecha</label>
+								<input type="date" class="form-control" id="fechaBusqueda" name="fechaBusqueda"
+									required />
+							</div>
+							<button type="submit" class="btn btn-primary">Buscar</button>
+
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<table id="tablaPersonal" class="table table-striped">
+			<thead class="table-dark">
+				<tr>
+					<th>Numero</th>
+					<th>Nombres</th>
+					<th>Fecha</th>
+					<th>Hora de Ingreso</th>
+					<th>Hora de Salida</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<!-- Agrega este formulario encima de la tabla para ingresar la fecha -->
+			<div class="table-title">
+				<div class="row">
+					<div class="col-sm-6 p-0 flex justify-content-lg-start justify-content-center">
+						<h2 class="ml-lg-2">Modulo Personal Colegio</h2>
+					</div>
+					<div class="col-sm-6 p-0 flex justify-content-lg-end justify-content-center">
+						<a data-bs-toggle="modal" data-bs-target="#personalModal1" type="button" name="btn_nuevo"
+							id="btn_nuevo" class="btn btn-primary">
+							<i class="material-icons">&#xE15C;</i>
+							<span>Nuevo Personal</span>
+						</a>
+						<a data-bs-toggle="modal" data-bs-target="#personalModal" type="button" name="btn_nuevo"
+							id="btn_nuevo" class="btn btn-success">
+							<i class="material-icons"></i>
+							<span>Agregar Nueva Entrada</span>
+						</a>
+					</div>
+				</div>
+			</div>
+			<tbody>
+				<tr th:each="Ipc, row : ${IpcsPorFecha}">
+					<td th:text="${row.index + 1}"></td>
+					<td th:text="${Ipc.objPersonal.nombre_personal+' '+Ipc.objPersonal.apellido_personal}"></td>
+					<td th:text="${Ipc.fecha}"></td>
+					<td th:text="${Ipc.hora_ingreso}"></td>
+					<td th:text="${Ipc.hora_salida}"></td>
+					<td>
+						<a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#personalModal"
+							th:data-id="${Ipc.id_ingresoPersonal}">
+							<i class="bi bi-pencil"></i>
+						</a>
+						<a th:href="@{/eliminarIPC/}+${Ipc.id_ingresoPersonal}" class="btn btn-danger"
+							onclick="return confirm('¿Estás seguro de que deseas eliminar este empleado?')">
+							<i class="bi bi-trash"></i>
+						</a>
+					</td>
+				</tr>
+
+			</tbody>
+			<tbody>
+				<tr th:each="Ipc, row : ${IpcsporID}">
+					<td th:text="${row.index + 1}"></td>
+					<td th:text="${Ipc.objPersonal.nombre_personal+' '+Ipc.objPersonal.apellido_personal}"></td>
+					<td th:text="${Ipc.fecha}"></td>
+					<td th:text="${Ipc.hora_ingreso}"></td>
+					<td th:text="${Ipc.hora_salida}"></td>
+					<td>
+						<a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#personalModal"
+							th:data-id="${Ipc.id_ingresoPersonal}">
+							<i class="bi bi-pencil"></i>
+						</a>
+						<a th:href="@{/eliminarIPC/}+${Ipc.id_ingresoPersonal}" class="btn btn-danger"
+							onclick="return confirm('¿Estás seguro de que deseas eliminar este empleado?')">
+							<i class="bi bi-trash"></i>
+						</a>
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+		<h3>Registros por día: <span th:text="${contadorRegistros}"></span></h3>
+		<h3>Registros por ID: <span th:text="${contadorRegistrosID}"></span></h3>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			// Manejar el evento de apertura del modal
+			$('#personalModal').on('show.bs.modal', function (event) {
+				var button = $(event.relatedTarget);
+				var id_ingresoPersonal = button.data('id');
+
+				if (id_ingresoPersonal !== undefined) {
+					// Realizar una solicitud AJAX solo si hay un ID definido (editar)
+					$.get('/editarIPC/' + id_ingresoPersonal + '/json', function (data) {
+						// Actualizar los campos del formulario en el modal con los datos obtenidos
+						console.log('ID del padre de familia:', data.id_personal);
+						$('#id_ingresoPersonal').val(data.id_ingresoPersonal);
+						$('#id_personal').val(data.id_personal).trigger('change');
+						$('#fecha').val(data.fecha);
+						$('#hora_ingreso').val(data.hora_ingreso);
+						$('#hora_salida').val(data.hora_salida);
+					});
+				} else {
+					// Limpiar los campos si no hay un ID definido (nuevo)
+					$('#id_ingresoPersonal').val('0');
+					$('#fecha').val('');
+					$('#hora_ingreso').val('');
+					$('#hora_salida').val('');
+				}
+			});
+
+		});
+	</script>
+	<script>
+		$(document).ready(function () {
+			// Manejar el evento de apertura del modal
+			$('#personalModal11').on('show.bs.modal', function (event) {
+				var button = $(event.relatedTarget); // Botón que activó el modal
+				var id_personal = button.data('id'); // Extraer el ID del personal
+
+
+			});
+		});
+	</script>
+	<script>
+
+		$('#id_personal').select2({
+			dropdownParent: $('#personalModal'),
+			width: '80%'
+		});
+	</script>
+	<script>
+			//select de la lista para buscar por nombre
+			$('#id_personalA').select2({
+					width: '100%'
+					
+					
+				});
+		</script>
 </body>
 
 </html>

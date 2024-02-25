@@ -7,10 +7,12 @@ import java.util.Optional;
 import com.colegio.demo.modelo.IngresoPPFF;
 
 
+
 public interface IIngresoPPFFService {
 	public List<IngresoPPFF>listarIngresoPPFF();
 	public Optional<IngresoPPFF>listarId(int id_ingresoPPFF);
 	public int Guardar(IngresoPPFF IPF); //Ingreso Padre de Familia 
 	public void Borrar(int id_ingresoPPFF);
 	List<IngresoPPFF> listarIngresoPPFFPorFecha(Date fecha);
+	List<IngresoPPFF>BuscarPersonalId(int id_ppff);
 }

@@ -22,6 +22,7 @@ import com.colegio.demo.modelo.PersonaExterna;
 
 
 
+
 @Controller
 @RequestMapping
 public class ControladorPE {
@@ -66,36 +67,79 @@ public class ControladorPE {
 		return "redirect:/listarPE";
 	}
 	//INGRESO PPFF
+	/*
+	 * @GetMapping("/listarIngresoPE") public String listarI(@RequestParam(name =
+	 * "fechaBusqueda", required = false) String fechaBusqueda, Model model) {
+	 * 
+	 * List<PersonaExterna>pes = service.listarPersonaE(); // lista de personal de
+	 * personas externas model.addAttribute("pe",new PersonaExterna()); //nueva
+	 * persona para agregar desde la misma vista model.addAttribute("Ipe",new
+	 * IngresoPersonaExterna());//Objeto vacio para crear nuevos registros
+	 * model.addAttribute("pes", pes); //agregando al modelo la lista de personal
+	 * colegio para manipular los nombres
+	 * 
+	 * //metodo para obtener listado segun la fecha Date fecha;
+	 * 
+	 * if (fechaBusqueda != null && !fechaBusqueda.isEmpty()) { // Si se ingresó una
+	 * fecha, conviértela a java.sql.Date fecha =
+	 * Date.valueOf(LocalDate.parse(fechaBusqueda)); } else { // Si no se ingresó
+	 * una fecha, usa la fecha del sistema fecha = Date.valueOf(LocalDate.now()); }
+	 * 
+	 * List<IngresoPersonaExterna> IpesPorFecha =
+	 * serviceI.listarIngresoPEPorFecha(fecha);//lista segun la fecha ingresada for
+	 * (int i = 0; i < IpesPorFecha.size(); i++) {
+	 * IpesPorFecha.get(i).setNumeroRegistro(i + 1); } int contadorRegistros =
+	 * IpesPorFecha.size(); // declarando contador usamos size para sacar la
+	 * cantidad total de registros por fecha model.addAttribute("contadorRegistros",
+	 * contadorRegistros); model.addAttribute("IpesPorFecha", IpesPorFecha);
+	 * //agregando la lista al modelo
+	 * 
+	 * 
+	 * return "IPE"; }
+	 */
 	@GetMapping("/listarIngresoPE")
-	public String listarI(@RequestParam(name = "fechaBusqueda", required = false) String fechaBusqueda, Model model) {
+	public String listarI(@RequestParam(name = "fechaBusqueda", required = false) String fechaBusqueda,
+	                       @RequestParam(name = "personaE", required = false) Integer personaE,
+	                       Model model) {
+		
+
 
 		List<PersonaExterna>pes = service.listarPersonaE(); // lista de personal de personas externas
 		model.addAttribute("pe",new PersonaExterna()); //nueva persona para agregar desde la misma vista
 		model.addAttribute("Ipe",new IngresoPersonaExterna());//Objeto vacio para crear nuevos registros		
 		model.addAttribute("pes", pes); //agregando al modelo la lista de personal colegio para manipular los nombres
 
-		//metodo para obtener listado segun la fecha 
-		 Date fecha;
+	    // Método para obtener listado según la fecha
+	    Date fecha;
 
-		    if (fechaBusqueda != null && !fechaBusqueda.isEmpty()) {
-		        // Si se ingresó una fecha, conviértela a java.sql.Date
-		        fecha = Date.valueOf(LocalDate.parse(fechaBusqueda));
-		    } else {
-		        // Si no se ingresó una fecha, usa la fecha del sistema
-		        fecha = Date.valueOf(LocalDate.now());
+	    if (fechaBusqueda != null && !fechaBusqueda.isEmpty()) {
+	        // Si se ingresó una fecha, conviértela a java.sql.Date
+	        fecha = Date.valueOf(LocalDate.parse(fechaBusqueda));
+	        List<IngresoPersonaExterna> IpePorFecha = serviceI.listarIngresoPEPorFecha(fecha);//lista segun la fecha ingresada
+		    for (int i = 0; i < IpePorFecha.size(); i++) {
+		    	IpePorFecha.get(i).setNumeroRegistro(i + 1);
 		    }
-
-		    List<IngresoPersonaExterna> IpesPorFecha = serviceI.listarIngresoPEPorFecha(fecha);//lista segun la fecha ingresada
-		    for (int i = 0; i < IpesPorFecha.size(); i++) {
-		    	IpesPorFecha.get(i).setNumeroRegistro(i + 1);
-		    }
-		    int contadorRegistros = IpesPorFecha.size();		   // declarando contador usamos size para sacar la cantidad total de registros por fecha
-		    model.addAttribute("contadorRegistros", contadorRegistros); 
-		    model.addAttribute("IpesPorFecha", IpesPorFecha); //agregando la lista al modelo
-
-		    
-		return "IPE";
+		    int contadorRegistros = IpePorFecha.size();   // declarando contador usamos size para sacar la cantidad total de registros por fecha
+		    model.addAttribute("contadorRegistros", contadorRegistros);
+		    model.addAttribute("IpePorFecha", IpePorFecha); //agregando la lista al modelo
+		    return "IPE";
+	    } else if (personaE != null){
+	    	List<IngresoPersonaExterna> IpesporID = serviceI.BuscarPersonalId(personaE); //En el html se hace referencia cuando lleve el atributo "name"
+	        for (int i = 0; i < IpesporID.size(); i++) {
+	        	IpesporID.get(i).setNumeroRegistro(i + 1);
+	        }
+	        int contadorRegistrosID = IpesporID.size();   // declarando contador usamos size para sacar la cantidad total de registros por ID
+	        model.addAttribute("contadorRegistrosID", contadorRegistrosID);
+	        model.addAttribute("IpesporID", IpesporID); // Agrega el ingreso de personal al modelo
+	        return "IPE";
+	    }else{
+	    	 // Si no se proporcionó ningún parámetro válido, mostrar un mensaje de error o redirigir a otra página
+	        return "IPE"; // Otra vista que muestre un mensaje de erro
+	        
+	    }
 	}
+	
+	
 	@GetMapping("/newIngresoPE")
 	public String agregarI(Model model) {
 		model.addAttribute("Ipe",new IngresoPersonaExterna());
@@ -106,7 +150,10 @@ public class ControladorPE {
 		serviceI.Guardar(ipe);
 		model.addAttribute("pe",new PersonaExterna()); 
 		model.addAttribute("Ipe",new IngresoPersonaExterna());
-		return "redirect:/listarIngresoPE";
+		
+		LocalDate fechaActual = LocalDate.now();
+	    String fechaActualStr = fechaActual.toString();
+		return "redirect:/listarIngresoPE?fechaBusqueda=" + fechaActualStr;
 	}
 	@GetMapping("/editarIPE/{id_ingresoPersonaE}")
 	public String editarI(@PathVariable int id_ingresoPersonaE, Model model) {

@@ -45,4 +45,10 @@ public class IngresoPPFFService implements IIngresoPPFFService{
 	    return data.listarIngresoPPFFPorFecha(fecha);
 	}
 
+	@Override
+	public List<IngresoPPFF> BuscarPersonalId(int id_ppff) {
+		
+		return data.BuscarPersonalId(id_ppff);
+	}
+
 }

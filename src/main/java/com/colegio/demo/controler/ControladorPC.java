@@ -52,7 +52,7 @@ public class ControladorPC {
 	public String guardar(@Validated PersonalColegio pc, Model model) {
 		model.addAttribute("pc", new PersonalColegio());
 		service.Guardar(pc);
-		return "redirect:/listarPC";
+		return "redirect:/listarIngresoPC";
 	}
 
 	@GetMapping("/editarPC/{id_personal}")
@@ -84,6 +84,7 @@ public class ControladorPC {
 
 
 	    List<PersonalColegio> pcs = service.listarPersonal(); // lista de personal de Personal Colegio
+	    model.addAttribute("pc", new PersonalColegio());
 	    model.addAttribute("Ipc", new IngresoPersonalColegio());//Objeto vacio para crear nuevos registros
 	    model.addAttribute("pcs", pcs); //agregando al modelo la lista de personal colegio para manipular los nombres
 
@@ -147,26 +148,6 @@ public class ControladorPC {
 	 * return "IPC"; }
 	 */
 	
-	@GetMapping("/buscarIPC")
-	public String buscarPorId(@RequestParam (name = "id_personal", required = false) int id_personal, Model model) {
-		 if (id_personal != 0) {
-		List<PersonalColegio> pcs = service.listarPersonal(); // lista de personal de Personal Colegio
-		model.addAttribute("Ipc", new IngresoPersonalColegio());//Objeto vacio para crear nuevos registros		
-		model.addAttribute("pcs", pcs); //agregando al modelo la lista de personal colegio para manipular los nombres
-	    List<IngresoPersonalColegio> IpcsporID = serviceI.BuscarPersonalId(id_personal);
-	    for (int i = 0; i < IpcsporID.size(); i++) {
-	    	IpcsporID.get(i).setNumeroRegistro(i + 1);
-	    }
-	    int contadorRegistros = IpcsporID.size();		   // declarando contador usamos size para sacar la cantidad total de registros por fecha
-	    model.addAttribute("contadorRegistros", contadorRegistros); 
-	    model.addAttribute("IpcsporID", IpcsporID); // Agrega el ingreso de personal al modelo
-	     // Nombre de la vista para mostrar los detalles del ingreso de personal
-		 }else {
-		        // Manejar el caso cuando el parámetro es null, por ejemplo, mostrando un mensaje de error
-		        model.addAttribute("error", "El parámetro id_personal es requerido.");
-		    }
-		 return "IPC";
-	}
 
 	 
 	@GetMapping("/NuevoPersonal")
@@ -182,9 +163,16 @@ public class ControladorPC {
 	
 	@PostMapping("/saveIPC")
 	public String guardarI(@Validated IngresoPersonalColegio ipc, Model model) {
-		model.addAttribute("Ipc", new IngresoPersonalColegio());
-		serviceI.Guardar(ipc);
-		return "redirect:/listarIngresoPC";
+	    // Establecer la fecha actual en el registro
+	    // Suponiendo que la fecha se almacena en un campo 'fecha' en tu entidad IngresoPersonalColegio
+
+	    model.addAttribute("Ipc", new IngresoPersonalColegio());
+	    serviceI.Guardar(ipc);
+
+	    // Redirigir al usuario a la página de listarIngresoPC con la fecha actual como parámetro de búsqueda
+	    LocalDate fechaActual = LocalDate.now();
+	    String fechaActualStr = fechaActual.toString();
+	    return "redirect:/listarIngresoPC?fechaBusqueda=" + fechaActualStr;
 	}
 
 	@GetMapping("/editarIPC/{id_ingresoPersonal}")

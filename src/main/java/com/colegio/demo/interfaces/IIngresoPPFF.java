@@ -9,9 +9,13 @@ import org.springframework.stereotype.Repository;
 
 import com.colegio.demo.modelo.IngresoPPFF;
 
+
 @Repository
 public interface IIngresoPPFF extends CrudRepository<IngresoPPFF, Integer> {
 	// Query personalizado para obtener ingresos por fecha
     @Query("SELECT i FROM IngresoPPFF i WHERE i.fecha = :fecha")
     List<IngresoPPFF> listarIngresoPPFFPorFecha(@Param("fecha") Date fecha);
+    
+    @Query("SELECT i FROM IngresoPPFF i WHERE i.id_ppff = :id_ppff")
+    List<IngresoPPFF> BuscarPersonalId(@Param("id_ppff") int id_ppff);
 }

@@ -46,4 +46,10 @@ public class IngresoPEService implements IIngresoPersonaExternaService {
 		return data.listarIngresoPEPorFecha(fecha);
 	}
 
+	@Override
+	public List<IngresoPersonaExterna> BuscarPersonalId(int id_personaE) {
+		
+		return data.BuscarPersonalId(id_personaE);
+	}
+
 }
