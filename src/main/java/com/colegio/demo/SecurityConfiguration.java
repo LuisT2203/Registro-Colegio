@@ -44,6 +44,7 @@ public class SecurityConfiguration {
 		return http.build();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Bean
 	InMemoryUserDetailsManager userDetailsService () {
 		

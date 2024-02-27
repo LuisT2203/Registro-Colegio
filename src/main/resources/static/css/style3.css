@@ -8,6 +8,7 @@
     left: 0;
     padding: 10px 30px;
     border-radius: 0px 0px 0 0;
+    z-index: 2; /* Asegura que table-title esté por encima de table-striped */
 }
 .table-title .btn{
 		   color:#fff;
@@ -22,6 +23,7 @@
 		   margin-left:10px;
 		   padding: 10px 20px;
 	   }
+
 		body {
 			background-color: #f8f9fa;
 			/* Agrega un color de fondo a la página */

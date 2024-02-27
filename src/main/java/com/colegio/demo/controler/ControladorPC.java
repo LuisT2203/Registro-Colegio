@@ -113,7 +113,9 @@ public class ControladorPC {
 	        return "IPC";
 	    }else{
 	    	 // Si no se proporcionó ningún parámetro válido, mostrar un mensaje de error o redirigir a otra página
-	        return "IPC"; // Otra vista que muestre un mensaje de erro
+	    	LocalDate fechaActual = LocalDate.now();
+		    String fechaActualStr = fechaActual.toString();
+		    return "redirect:/listarIngresoPC?fechaBusqueda=" + fechaActualStr; // Otra vista que muestre un mensaje de erro
 	        
 	    }
 	}
