@@ -1,4 +1,8 @@
 @charset "ISO-8859-1";
+.container mt-4{
+	display: flex;
+	flex-wrap: wrap;
+}
 .table-title {
     background:#23282b;
     color: #fff;
