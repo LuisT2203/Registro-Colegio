@@ -1,8 +1,8 @@
 package com.colegio.demo.modelo;
-import java.sql.Date;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,14 +17,17 @@ import jakarta.persistence.Table;
 public class IngresoPersonaExterna {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id_ingresoPersonaE;
-	private int id_personaE; //llave foranea para hacer referencia al objeto personalColegio, (No olvidar crear el objeto manytoone para manejar los datos)
+	private int id_ingresoPersonaE; //llave foranea para hacer referencia al objeto personalColegio Nos servira para listar por (id), (No olvidar crear el objeto manytoone para manejar los datos)
 	@Column(name = "fecha")
-	private Date fecha;
+	private LocalDate fecha;
 	private LocalTime hora_ingreso;
 	private LocalTime hora_salida;
 	private String asunto;
 	private int numeroRegistro;
+	
+	@ManyToOne
+	@JoinColumn(name="id_personaE", referencedColumnName = "id_personaE")
+	private PersonaExterna personaE;
 	
 	public IngresoPersonaExterna() {
 		super();
@@ -34,11 +37,11 @@ public class IngresoPersonaExterna {
 	
 
 
-	public IngresoPersonaExterna(int id_ingresoPersonaE, int id_personaE, Date fecha, LocalTime hora_ingreso,
+	public IngresoPersonaExterna(int id_ingresoPersonaE, LocalDate fecha, LocalTime hora_ingreso,
 			LocalTime hora_salida, String asunto, int numeroRegistro) {
 		super();
 		this.id_ingresoPersonaE = id_ingresoPersonaE;
-		this.id_personaE = id_personaE;
+		
 		this.fecha = fecha;
 		this.hora_ingreso = hora_ingreso;
 		this.hora_salida = hora_salida;
@@ -60,22 +63,14 @@ public class IngresoPersonaExterna {
 	}
 
 
-	public int getId_personaE() {
-		return id_personaE;
-	}
 
 
-	public void setId_personaE(int id_personaE) {
-		this.id_personaE = id_personaE;
-	}
-
-
-	public Date getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
 
-	public void setFecha(Date fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 
@@ -108,18 +103,16 @@ public class IngresoPersonaExterna {
 	public void setAsunto(String asunto) {
 		this.asunto = asunto;
 	}
-	@JsonBackReference
-	@ManyToOne
-	@JoinColumn(name="id_personaE", insertable=false,updatable=false)
-	private PersonaExterna objPersonaE;
+	
+	
 
-	public PersonaExterna getObjPersonaE() {
-		return objPersonaE;
+	public PersonaExterna getPersonaE() {
+		return personaE;
 	}
 
 
-	public void setObjPersonaE(PersonaExterna objPersonaE) {
-		this.objPersonaE = objPersonaE;
+	public void setObjPersonaE(PersonaExterna personaE) {
+		this.personaE = personaE;
 	}
 
 	public int getNumeroRegistro() {

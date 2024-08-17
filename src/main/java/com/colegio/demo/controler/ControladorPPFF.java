@@ -1,29 +1,37 @@
 package com.colegio.demo.controler;
 
-import java.sql.Date;
+
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.MediaType;
+
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import org.springframework.web.bind.annotation.RestController;
 
 import com.colegio.demo.interfacesService.IIngresoPPFFService;
 import com.colegio.demo.interfacesService.IppffService;
 import com.colegio.demo.modelo.PPFF;
 import com.colegio.demo.modelo.IngresoPPFF;
+import com.colegio.demo.modelo.IngresoPersonalColegio;
 
 
-@Controller
-@RequestMapping
+
+@RestController
+@RequestMapping(value = "ControladorPPFF", produces = MediaType.APPLICATION_JSON_VALUE)
+@CrossOrigin(origins = "*")
 public class ControladorPPFF {
 	@Autowired
 	private IppffService service;
@@ -32,11 +40,9 @@ public class ControladorPPFF {
 
 	/// PPFF
 	@GetMapping("/listarPPFF")
-	public String listar(Model model) {
-		List<PPFF> ppffs = service.listarPPFF();
-		model.addAttribute("ppffs", ppffs);
-		model.addAttribute("ppff", new PPFF());
-		return "PPFF";
+	public List<PPFF> listar(Model model) {
+		return service.listarPPFF();
+		
 	}
 
 	@GetMapping("/newPPFF")
@@ -45,107 +51,63 @@ public class ControladorPPFF {
 		return "PPFF";
 	}
 
-	@PostMapping("/savePPFF")
-	public String guardar(@Validated PPFF p, Model model) {
-		model.addAttribute("ppff", new PPFF());
-		service.Guardar(p);
-		return "redirect:/listarIPPFF";
+	@PostMapping(value="/savePPFF",consumes= MediaType.APPLICATION_JSON_VALUE)
+	public PPFF guardar(@RequestBody PPFF p) {
+		return service.Guardar(p);
+		
+	}
+	@PutMapping(value="/updatePPFF",consumes= MediaType.APPLICATION_JSON_VALUE)
+	public PPFF Actualizar(@RequestBody PPFF p) {
+		return service.Guardar(p);
+		
 	}
 
 	@GetMapping("/editarPPFF/{Id_ppff}")
-	public String editar(@PathVariable int Id_ppff, Model model) {
-		Optional<PPFF> ppff = service.listarId(Id_ppff);
-		model.addAttribute("ppff", ppff);
-		return "PPFF";
+	public PPFF editar(@PathVariable ("Id_ppff") int Id_ppff) {
+		return service.listarId(Id_ppff);
+		
 	}
 
-	@GetMapping("/editarPPFF/{id_ppff}/json")
-	@ResponseBody
-	public ResponseEntity<PPFF> editarJson(@PathVariable int id_ppff) {
-		Optional<PPFF> ppff = service.listarId(id_ppff);
-		return ResponseEntity.ok(ppff.orElse(new PPFF()));
-	}
 
-	@GetMapping("/eliminarPPFF/{Id_ppff}")
-	public String delete(Model model, @PathVariable int Id_ppff) {
-		service.Borrar(Id_ppff);
-		return "redirect:/listarPPFF";
+	@DeleteMapping("/eliminarPPFF/{Id_ppff}")
+	public PPFF delete(@PathVariable ("Id_ppff") int Id_ppff) {
+		return service.Borrar(Id_ppff);
+		
 	}
-	/*
-	 * //INGRESO PPFF
-	 * 
-	 * @GetMapping("/listarIPPFF") public String listarI(@RequestParam(name =
-	 * "fechaBusqueda", required = false) String fechaBusqueda, Model model) {
-	 * 
-	 * List<PPFF>ppffs = service.listarPPFF(); // lista de personal de Personal
-	 * Colegio model.addAttribute("ppff",new PPFF()); model.addAttribute("Ippff",new
-	 * IngresoPPFF());//Objeto vacio para crear nuevos registros
-	 * model.addAttribute("ppffs", ppffs); //agregando al modelo la lista de
-	 * personal colegio para manipular los nombres
-	 * 
-	 * //metodo para obtener listado segun la fecha Date fecha;
-	 * 
-	 * if (fechaBusqueda != null && !fechaBusqueda.isEmpty()) { // Si se ingresó una
-	 * fecha, conviértela a java.sql.Date fecha =
-	 * Date.valueOf(LocalDate.parse(fechaBusqueda)); } else { // Si no se ingresó
-	 * una fecha, usa la fecha del sistema fecha = Date.valueOf(LocalDate.now()); }
-	 * 
-	 * List<IngresoPPFF> IppffsPorFecha =
-	 * serviceI.listarIngresoPPFFPorFecha(fecha);//lista segun la fecha ingresada
-	 * for (int i = 0; i < IppffsPorFecha.size(); i++) {
-	 * IppffsPorFecha.get(i).setNumeroRegistro(i + 1); } int contadorRegistros =
-	 * IppffsPorFecha.size(); // declarando contador usamos size para sacar la
-	 * cantidad total de registros por fecha model.addAttribute("contadorRegistros",
-	 * contadorRegistros); model.addAttribute("IppffsPorFecha", IppffsPorFecha);
-	 * //agregando la lista al modelo
-	 * 
-	 * 
-	 * return "IPPFF"; }
-	 */
+	
+	 //INGRESO PPFF
+	
 
 	@GetMapping("/listarIPPFF")
-	public String listarI(@RequestParam(name = "fechaBusqueda", required = false) String fechaBusqueda,
-			@RequestParam(name = "id_ppff", required = false) Integer id_ppff, Model model) {
-
-		List<PPFF> ppffs = service.listarPPFF(); // lista de personal de Personal Colegio
-		model.addAttribute("ppff", new PPFF());
-		model.addAttribute("Ippff", new IngresoPPFF());// Objeto vacio para crear nuevos registros
-		model.addAttribute("ppffs", ppffs); // agregando al modelo la lista de personal colegio para manipular los
-											// nombres
-
-		// Método para obtener listado según la fecha
-		Date fecha;
-
+	public List<IngresoPPFF> listarIngresoPPFF(
+			@RequestParam(name = "fechaBusqueda", required = false) String fechaBusqueda,
+			@RequestParam(name = "id_ppff", required = false) Integer id_ppff) {
 		if (fechaBusqueda != null && !fechaBusqueda.isEmpty()) {
-			// Si se ingresó una fecha, conviértela a java.sql.Date
-			fecha = Date.valueOf(LocalDate.parse(fechaBusqueda));
-			List<IngresoPPFF> IppffsPorFecha = serviceI.listarIngresoPPFFPorFecha(fecha);// lista segun la fecha
-																							// ingresada
-			for (int i = 0; i < IppffsPorFecha.size(); i++) {
-				IppffsPorFecha.get(i).setNumeroRegistro(i + 1);
-			}
-			int contadorRegistros = IppffsPorFecha.size(); // declarando contador usamos size para sacar la cantidad
-															// total de registros por fecha
-			model.addAttribute("contadorRegistros", contadorRegistros);
-			model.addAttribute("IppffsPorFecha", IppffsPorFecha); // agregando la lista al modelo
-			return "IPPFF";
+			LocalDate fecha = LocalDate.parse(fechaBusqueda);
+			return listarIngresoPorFecha(fecha);
 		} else if (id_ppff != null) {
-			List<IngresoPPFF> IppffsporID = serviceI.BuscarPersonalId(id_ppff);
-			for (int i = 0; i < IppffsporID.size(); i++) {
-				IppffsporID.get(i).setNumeroRegistro(i + 1);
-			}
-			int contadorRegistrosID = IppffsporID.size(); // declarando contador usamos size para sacar la cantidad
-															// total de registros por ID
-			model.addAttribute("contadorRegistrosID", contadorRegistrosID);
-			model.addAttribute("IppffsporID", IppffsporID); // Agrega el ingreso de personal al modelo
-			return "IPPFF";
+			return listarIngresoPorID(id_ppff);
 		} else {
-			// Si no se proporcionó ningún parámetro válido, mostrar un mensaje de error o
-			// redirigir a otra página
 			LocalDate fechaActual = LocalDate.now();
-			String fechaActualStr = fechaActual.toString();
-			return "redirect:/listarIPPFF?fechaBusqueda=" + fechaActualStr; // Otra vista que muestre un mensaje de erro
+			return listarIngresoPorFecha(fechaActual);
+		}
+	}
 
+	private List<IngresoPPFF> listarIngresoPorFecha(LocalDate fecha) {
+		List<IngresoPPFF> ingresosPorFecha = serviceI.listarIngresoPPFFPorFecha(fecha);
+		asignarNumeroDeRegistro(ingresosPorFecha);
+		return ingresosPorFecha;
+	}
+
+	private List<IngresoPPFF> listarIngresoPorID(Integer id_ppff) {
+		List<IngresoPPFF> ingresosPorID = serviceI.BuscarPersonalId(id_ppff);
+		asignarNumeroDeRegistro(ingresosPorID);
+		return ingresosPorID;
+	}
+
+	private void asignarNumeroDeRegistro(List<IngresoPPFF> ingresos) {
+		for (int i = 0; i < ingresos.size(); i++) {
+			ingresos.get(i).setNumeroRegistro(i + 1);
 		}
 	}
 
@@ -155,33 +117,46 @@ public class ControladorPPFF {
 		return "IPPFF";
 	}
 
-	@PostMapping("/saveIPPFF")
-	public String guardarI(@Validated IngresoPPFF ip, Model model) {
-		model.addAttribute("Ippff", new IngresoPPFF());
-		model.addAttribute("ppff", new PPFF());
-		serviceI.Guardar(ip);
-		LocalDate fechaActual = LocalDate.now();
-		String fechaActualStr = fechaActual.toString();
-		return "redirect:/listarIPPFF?fechaBusqueda=" + fechaActualStr;
+	@PostMapping(value="/saveIPPFF",consumes= MediaType.APPLICATION_JSON_VALUE)
+	public IngresoPPFF guardarI(@RequestBody IngresoPPFF ip) {
+		
+		/* ip.setFecha(LocalDate.now()); */
+		IngresoPPFF guardado = serviceI.Guardar(ip);
+		
+		
+		return guardado;
+	}
+	@PutMapping(value="/updateIPPFF",consumes= MediaType.APPLICATION_JSON_VALUE)
+	public IngresoPPFF actualizarI(@RequestBody IngresoPPFF ip) {
+		
+		ip.setFecha(LocalDate.now());
+		IngresoPPFF guardado = serviceI.Guardar(ip);
+		
+		if(guardado != null) {
+			// LocalDate fechaActual = LocalDate.now();
+			// List<IngresoPPFF> ingresosPorFecha = serviceI.listarIngresoPPFFPorFecha(fechaActual); (retorna la lista con la fecha actual una vez guardado)
+		}
+		return guardado;
 	}
 
 	@GetMapping("/editarIPPFF/{id_ingresoPPFF}")
-	public String editarI(@PathVariable int id_ingresoPPFF, Model model) {
-		Optional<IngresoPPFF> Ippff = serviceI.listarId(id_ingresoPPFF);
-		model.addAttribute("Ippff", Ippff);
-		return "IPPFF";
+	public IngresoPPFF editarI(@PathVariable ("Id_ppff") int id_ingresoPPFF) {
+		return serviceI.listarId(id_ingresoPPFF);
+		
 	}
 
-	@GetMapping("/editarIPPFF/{id_ingresoPPFF}/json")
-	@ResponseBody
-	public ResponseEntity<IngresoPPFF> editarJsonI(@PathVariable int id_ingresoPPFF) {
-		Optional<IngresoPPFF> Ippff = serviceI.listarId(id_ingresoPPFF);
-		return ResponseEntity.ok(Ippff.orElse(new IngresoPPFF()));
-	}
+	/*
+	 * @GetMapping("/editarIPPFF/{id_ingresoPPFF}/json")
+	 * 
+	 * @ResponseBody public ResponseEntity<IngresoPPFF> editarJsonI(@PathVariable
+	 * int id_ingresoPPFF) { Optional<IngresoPPFF> Ippff =
+	 * serviceI.listarId(id_ingresoPPFF); return ResponseEntity.ok(Ippff.orElse(new
+	 * IngresoPPFF())); }
+	 */
 
-	@GetMapping("/eliminarIPPFF/{id_ingresoPPFF}")
-	public String deleteI(Model model, @PathVariable int id_ingresoPPFF) {
-		serviceI.Borrar(id_ingresoPPFF);
-		return "redirect:/listarIPPFF";
+	@DeleteMapping("/eliminarIPPFF/{id_ingresoPPFF}")
+	public IngresoPPFF deleteI( @PathVariable ("Id_ppff") int id_ingresoPPFF) {
+		return serviceI.Borrar(id_ingresoPPFF);
+		
 	}
 }

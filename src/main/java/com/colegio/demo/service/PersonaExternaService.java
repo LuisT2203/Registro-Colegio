@@ -1,7 +1,7 @@
 package com.colegio.demo.service;
 
 import java.util.List;
-import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,23 +21,27 @@ public class PersonaExternaService implements IPersonaExternaService {
 	}
 
 	@Override
-	public Optional<PersonaExterna> listarId(int id_personaE) {
-		return data.findById(id_personaE);
+	public PersonaExterna listarId(int id_personaE) {
+		return data.findById(id_personaE).orElse(new PersonaExterna());
 	}
 
 	@Override
-	public int Guardar(PersonaExterna PE) {
-		int res=0;
+	public PersonaExterna Guardar(PersonaExterna PE) {
+		
 		PersonaExterna personaexterna=data.save(PE);
-		if (!personaexterna.equals(null)) {
-			res=1;
-		}
-		return res;
+		return personaexterna;
+		
 	}
 
 	@Override
-	public void Borrar(int id_personaE) {
-		data.deleteById(id_personaE);
+	public PersonaExterna Borrar(int id_personaE) {
+		PersonaExterna temp = data.findById(id_personaE).orElse(null);
+		if(temp==null){
+			return new PersonaExterna();
+		}else {
+			data.deleteById(id_personaE);
+			return temp;
+		}
 		
 	}
 

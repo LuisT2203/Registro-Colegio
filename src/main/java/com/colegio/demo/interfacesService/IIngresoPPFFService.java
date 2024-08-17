@@ -1,8 +1,9 @@
 package com.colegio.demo.interfacesService;
 
-import java.sql.Date;
+
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+
 
 import com.colegio.demo.modelo.IngresoPPFF;
 
@@ -10,9 +11,9 @@ import com.colegio.demo.modelo.IngresoPPFF;
 
 public interface IIngresoPPFFService {
 	public List<IngresoPPFF>listarIngresoPPFF();
-	public Optional<IngresoPPFF>listarId(int id_ingresoPPFF);
-	public int Guardar(IngresoPPFF IPF); //Ingreso Padre de Familia 
-	public void Borrar(int id_ingresoPPFF);
-	List<IngresoPPFF> listarIngresoPPFFPorFecha(Date fecha);
+	public IngresoPPFF listarId(int id_ingresoPPFF);
+	public IngresoPPFF Guardar(IngresoPPFF IPF); //Ingreso Padre de Familia 
+	public IngresoPPFF Borrar(int id_ingresoPPFF);
+	List<IngresoPPFF> listarIngresoPPFFPorFecha(LocalDate fecha);
 	List<IngresoPPFF>BuscarPersonalId(int id_ppff);
 }

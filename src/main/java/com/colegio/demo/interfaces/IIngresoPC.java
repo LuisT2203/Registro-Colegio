@@ -1,5 +1,5 @@
 package com.colegio.demo.interfaces;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -12,8 +12,8 @@ import com.colegio.demo.modelo.IngresoPersonalColegio;
 public interface IIngresoPC extends CrudRepository<IngresoPersonalColegio, Integer> {
 	// Query personalizado para obtener ingresos por fecha
     @Query("SELECT i FROM IngresoPersonalColegio i WHERE i.fecha = :fecha")
-    List<IngresoPersonalColegio> listarIngresoPCPorFecha(@Param("fecha") Date fecha);
+    List<IngresoPersonalColegio> listarIngresoPCPorFecha(@Param("fecha") LocalDate fecha);
     
-    @Query("SELECT ipc FROM IngresoPersonalColegio ipc WHERE ipc.id_personal = :id_personal")
+    @Query("SELECT ipc FROM IngresoPersonalColegio ipc WHERE ipc.personal.id_personal = :id_personal")
     List<IngresoPersonalColegio> BuscarPersonalId(@Param("id_personal") int id_personal);
 }

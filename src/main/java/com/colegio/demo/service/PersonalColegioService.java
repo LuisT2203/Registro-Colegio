@@ -1,6 +1,6 @@
 package com.colegio.demo.service;
 import java.util.List;
-import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,23 +19,28 @@ public class PersonalColegioService implements IPersonalColegioService {
 	}
 
 	@Override
-	public Optional<PersonalColegio> listarId(int Id_personal) {
-		return data.findById(Id_personal);
+	public PersonalColegio listarId(int Id_personal) {
+		return data.findById(Id_personal).orElse(new PersonalColegio());
 	}
 
 	@Override
-	public int Guardar(PersonalColegio PC) {
-		int res=0;
+	public PersonalColegio Guardar(PersonalColegio PC) {
+		
 		PersonalColegio personalcolegio=data.save(PC);
-		if (!personalcolegio.equals(null)) {
-			res=1;
-		}
-		return res;
+		return personalcolegio;
+		
 	}
 
 	@Override
-	public void Borrar(int Id_personal) {
-		data.deleteById(Id_personal);
+	public PersonalColegio Borrar(int Id_personal) {
+		PersonalColegio temp= data.findById(Id_personal).orElse(null);
+		if(temp==null) {
+			return new PersonalColegio();
+		}else {
+			data.deleteById(Id_personal);
+			return temp;
+		}
+		
 		
 	}
 

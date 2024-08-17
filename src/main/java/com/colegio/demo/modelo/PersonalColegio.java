@@ -1,21 +1,15 @@
 package com.colegio.demo.modelo;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 @Entity
 @Table(name = "PersonalColegio")
 public class PersonalColegio {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	 @JsonProperty("id_personal")
 	private int id_personal;
 	private String nombre_personal;
 	private String apellido_personal;
@@ -64,17 +58,7 @@ public class PersonalColegio {
 	public void setCargo_personal(String cargo_personal) {
 		this.cargo_personal = cargo_personal;
 	}
-	@JsonManagedReference
-	@OneToMany(mappedBy = "objPersonal")
-    private List<IngresoPersonalColegio> ingresosPersonales;
-
-	public List<IngresoPersonalColegio> getIngresosPersonales() {
-		return ingresosPersonales;
-	}
-
-	public void setIngresosPersonales(List<IngresoPersonalColegio> ingresosPersonales) {
-		this.ingresosPersonales = ingresosPersonales;
-	}
+	
 	
 
 }

@@ -1,7 +1,8 @@
 package com.colegio.demo.service;
-import java.sql.Date;
+
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,28 +21,29 @@ public class IngresoPEService implements IIngresoPersonaExternaService {
 	}
 
 	@Override
-	public Optional<IngresoPersonaExterna> listarId(int id_ingresoPersonaE) {
-		return data.findById(id_ingresoPersonaE);
+	public IngresoPersonaExterna listarId(int id_ingresoPersonaE) {
+		return data.findById(id_ingresoPersonaE).orElse(new IngresoPersonaExterna());
 	}
 
 	@Override
-	public int Guardar(IngresoPersonaExterna IPE) {
-		int res=0;
-		IngresoPersonaExterna ingresoPE=data.save(IPE);
-		if (!ingresoPE.equals(null)) {
-			res=1;
+	public IngresoPersonaExterna Guardar(IngresoPersonaExterna IPE) {
+		return data.save(IPE);
+	}
+
+	@Override
+	public IngresoPersonaExterna Borrar(int id_ingresoPersonaE) {
+		IngresoPersonaExterna temp = data.findById(id_ingresoPersonaE).orElse(null);
+		if(temp==null) {
+			return new IngresoPersonaExterna();
+		}else {
+			data.deleteById(id_ingresoPersonaE);
+			return temp;
 		}
-		return res;
-	}
-
-	@Override
-	public void Borrar(int id_ingresoPersonaE) {
-		data.deleteById(id_ingresoPersonaE);
 		
 	}
 
 	@Override
-	public List<IngresoPersonaExterna> listarIngresoPEPorFecha(Date fecha) {
+	public List<IngresoPersonaExterna> listarIngresoPEPorFecha(LocalDate fecha) {
 		// TODO Auto-generated method stub
 		return data.listarIngresoPEPorFecha(fecha);
 	}

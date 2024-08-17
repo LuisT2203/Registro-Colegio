@@ -1,7 +1,8 @@
 package com.colegio.demo.service;
-import java.sql.Date;
+
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,27 +22,29 @@ public class IngresoPPFFService implements IIngresoPPFFService{
 	}
 
 	@Override
-	public Optional<IngresoPPFF> listarId(int id_ingresoPPFF) {
-		return data.findById(id_ingresoPPFF);
+	public IngresoPPFF listarId(int id_ingresoPPFF) {
+		return data.findById(id_ingresoPPFF).orElse(new IngresoPPFF());
 	}
 
 	@Override
-	public int Guardar(IngresoPPFF IPF) {
-		int res=0;
-		IngresoPPFF ingresoPPFF=data.save(IPF);
-		if (!ingresoPPFF.equals(null)) {
-			res=1;
+	public IngresoPPFF Guardar(IngresoPPFF IPF) {
+		return data.save(IPF);
+		
+	}
+
+	@Override
+	public IngresoPPFF Borrar(int id_ingresoPPFF) {
+		IngresoPPFF temp = data.findById(id_ingresoPPFF).orElse(null);
+		if(temp==null) {
+			return new IngresoPPFF();
+		}else {
+			data.deleteById(id_ingresoPPFF);
+			return temp;
 		}
-		return res;
-	}
-
-	@Override
-	public void Borrar(int id_ingresoPPFF) {
-		data.deleteById(id_ingresoPPFF);
 		
 	}
 	@Override
-	public List<IngresoPPFF> listarIngresoPPFFPorFecha(Date fecha) {
+	public List<IngresoPPFF> listarIngresoPPFFPorFecha(LocalDate fecha) {
 	    return data.listarIngresoPPFFPorFecha(fecha);
 	}
 

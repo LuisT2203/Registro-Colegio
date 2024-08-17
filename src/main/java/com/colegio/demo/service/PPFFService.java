@@ -1,6 +1,6 @@
 package com.colegio.demo.service;
 import java.util.List;
-import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,23 +20,28 @@ public class PPFFService implements IppffService {
 	}
 
 	@Override
-	public Optional<PPFF> listarId(int Id_ppff) {
-		return data.findById(Id_ppff);
+	public PPFF listarId(int Id_ppff) {
+		return data.findById(Id_ppff).orElse(new PPFF());
 	}
 
 	@Override
-	public int Guardar(PPFF P) {
-		int res=0;
+	public PPFF Guardar(PPFF P) {
+		
 		PPFF ppff=data.save(P);
-		if (!ppff.equals(null)) {
-			res=1;
-		}
-		return res;
+		return ppff;
+		
 	}
 
 	@Override
-	public void Borrar(int Id_ppff) {
-		data.deleteById(Id_ppff);
+	public PPFF Borrar(int Id_ppff) {
+
+		PPFF temp = data.findById(Id_ppff).orElse(null);
+		if(temp==null) {
+			return new PPFF();
+		}else {
+			data.deleteById(Id_ppff);
+			return temp;
+		}
 		
 	}
 

@@ -1,10 +1,7 @@
 package com.colegio.demo.modelo;
-import java.sql.Date;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,24 +16,28 @@ public class IngresoPersonalColegio {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_ingresoPersonal;
-	@Column(name = "id_personal")
-	private int id_personal; //llave foranea para hacer referencia al objeto personalColegio, (No olvidar crear el objeto manytoone para manejar los datos)
 	@Column(name = "fecha")
-	private Date fecha;
+	private LocalDate fecha;
 	private LocalTime  hora_ingreso;
 	private LocalTime  hora_salida;
 	private int numeroRegistro;
+	
+	@ManyToOne
+	@JoinColumn(name="id_personal",  referencedColumnName = "id_personal")
+	private PersonalColegio personal;
+
+	
 	public IngresoPersonalColegio() {
 		super();
 	}
 
 	
 
-	public IngresoPersonalColegio(int id_ingresoPersonal, int id_personal, Date fecha, LocalTime hora_ingreso,
+	public IngresoPersonalColegio(int id_ingresoPersonal,  LocalDate fecha, LocalTime hora_ingreso,
 			LocalTime hora_salida, int numeroRegistro) {
 		super();
 		this.id_ingresoPersonal = id_ingresoPersonal;
-		this.id_personal = id_personal;
+		
 		this.fecha = fecha;
 		this.hora_ingreso = hora_ingreso;
 		this.hora_salida = hora_salida;
@@ -57,19 +58,15 @@ public class IngresoPersonalColegio {
 
 	
 
-	public int getId_personal() {
-		return id_personal;
-	}
+	
 
-	public void setId_personal(int id_personal) {
-		this.id_personal = id_personal;
-	}
+	
 
-	public Date getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 
@@ -100,18 +97,13 @@ public class IngresoPersonalColegio {
 		this.numeroRegistro = numeroRegistro;
 	}
 
-
-	@JsonBackReference
-	@ManyToOne
-	@JoinColumn(name="id_personal", insertable=false,updatable=false)
-	private PersonalColegio objPersonal;
-
-	public PersonalColegio getObjPersonal() {
-		return objPersonal;
+	
+	public PersonalColegio getPersonal() {
+		return personal;
 	}
 
-	public void setObjPersonal(PersonalColegio objPersonal) {
-		this.objPersonal = objPersonal;
+	public void setObjPersonal(PersonalColegio personal) {
+		this.personal = personal;
 	}
 	
 	

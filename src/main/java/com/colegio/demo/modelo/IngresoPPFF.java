@@ -1,9 +1,9 @@
 package com.colegio.demo.modelo;
-import java.sql.Date;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,46 +20,38 @@ public class IngresoPPFF {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_ingresoPPFF;
 	 //llave foranea para hacer referencia al objeto ppff, (No olvidar crear el objeto manytoone para manejar los datos)
-	private int id_ppff;
 	@Column(name = "fecha")
-	private Date fecha;
+	private LocalDate fecha;
 	private LocalTime hora_ingreso;
 	private LocalTime hora_salida;
 	private String asunto;
 	private int numeroRegistro;
+	
+	@ManyToOne
+	@JoinColumn(name="id_ppff",referencedColumnName = "id_ppff")
+	private PPFF padre;
 	
 	public IngresoPPFF() {
 		super();
 	}
 
 	
-	public IngresoPPFF(int id_ingresoPPFF, int id_ppff, Date fecha, LocalTime hora_ingreso, LocalTime hora_salida,
-			String asunto, int numeroRegistro, PPFF objPPFF) {
+	public IngresoPPFF(int id_ingresoPPFF, LocalDate fecha, LocalTime hora_ingreso, LocalTime hora_salida,
+			String asunto, int numeroRegistro, PPFF padre) {
 		super();
 		this.id_ingresoPPFF = id_ingresoPPFF;
-		this.id_ppff = id_ppff;
+		
 		this.fecha = fecha;
 		this.hora_ingreso = hora_ingreso;
 		this.hora_salida = hora_salida;
 		this.asunto = asunto;
 		this.numeroRegistro = numeroRegistro;
-		this.objPPFF = objPPFF;
+		this.padre = padre;
 	}
 
 
 
 
-
-
-
-	public int getId_ppff() {
-		return id_ppff;
-	}
-
-
-	public void setId_ppff(int id_ppff) {
-		this.id_ppff = id_ppff;
-	}
 
 
 	public int getId_ingresoPPFF() {
@@ -70,11 +62,11 @@ public class IngresoPPFF {
 		this.id_ingresoPPFF = id_ingresoPPFF;
 	}
 
-	public Date getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 
@@ -103,17 +95,15 @@ public class IngresoPPFF {
 	}
 
 	
-	@JsonBackReference
-	@ManyToOne
-	@JoinColumn(name="id_ppff",insertable=false,updatable=false)
-	private PPFF objPPFF;
+	
+	
 
-	public PPFF getObjPPFF() {
-		return objPPFF;
+	public PPFF getPadre() {
+		return padre;
 	}
 
-	public void setObjPPFF(PPFF objPPFF) {
-		this.objPPFF = objPPFF;
+	public void setPadre(PPFF padre) {
+		this.padre = padre;
 	}
 
 	public int getNumeroRegistro() {

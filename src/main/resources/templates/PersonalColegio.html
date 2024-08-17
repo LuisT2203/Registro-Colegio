@@ -124,7 +124,7 @@
 
             if (id_personal !== undefined) {
                 // Realizar una solicitud AJAX solo si hay un ID definido (editar)
-                $.get('/editarPC/' + id_personal + '/json', function (data) {
+                $.get(  id_personal , function (data) {
                     // Actualizar los campos del formulario en el modal con los datos obtenidos
                     $('#id_personal').val(data.id_personal);
                     $('#nombre_personal').val(data.nombre_personal);

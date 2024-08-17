@@ -1,8 +1,8 @@
 package com.colegio.demo.service;
-import java.sql.Date;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,28 +22,32 @@ public class IngresoPCService implements IIngresoPersonalColegioService {
 	}
 
 	@Override
-	public Optional<IngresoPersonalColegio> listarId(int id_ingresoPersonal) {
-		return data.findById(id_ingresoPersonal);
+	public IngresoPersonalColegio listarId(int id_ingresoPersonal) {
+		return data.findById(id_ingresoPersonal).orElse(new IngresoPersonalColegio());
 	}
 
 	@Override
-	public int Guardar(IngresoPersonalColegio IPC) {
-		int res=0;
-		IngresoPersonalColegio ingresoPC=data.save(IPC);
-		if (!ingresoPC.equals(null)) {
-			res=1;
+	public IngresoPersonalColegio Guardar(IngresoPersonalColegio IPC) {
+		
+		 return data.save(IPC);
+		
+	}
+
+	@Override
+	public IngresoPersonalColegio Borrar(int id_ingresoPersonal) {
+		IngresoPersonalColegio temp = data.findById(id_ingresoPersonal).orElse(null);
+		if(temp == null) {
+			return new IngresoPersonalColegio();
+		}else {
+			data.deleteById(id_ingresoPersonal);
+			return temp;
 		}
-		return res;
-	}
-
-	@Override
-	public void Borrar(int id_ingresoPersonal) {
-		data.deleteById(id_ingresoPersonal);
+		
 		
 	}
 	
 	@Override
-	public List<IngresoPersonalColegio> listarIngresoPCPorFecha(Date fecha) {
+	public List<IngresoPersonalColegio> listarIngresoPCPorFecha(LocalDate fecha) {
 	    return data.listarIngresoPCPorFecha(fecha);
 	}
 

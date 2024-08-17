@@ -1,13 +1,10 @@
 package com.colegio.demo.modelo;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+
 import jakarta.persistence.Table;
 @Entity
 @Table(name = "ppff")
@@ -20,14 +17,14 @@ public class PPFF {
 	private String dni;
 	private String nombre_alu;
 	private String apellido_alu;
-	private String año_alu;
+	private String anio_alu;
 	
 	public PPFF() {
 		super();
 	}
 
 	public PPFF(int id_ppff, String nombre_ppff, String apellido_ppff, String dni, String nombre_alu,
-			String apellido_alu, String año_alu) {
+			String apellido_alu, String anio_alu) {
 		super();
 		this.id_ppff = id_ppff;
 		this.nombre_ppff = nombre_ppff;
@@ -35,7 +32,7 @@ public class PPFF {
 		this.dni = dni;
 		this.nombre_alu = nombre_alu;
 		this.apellido_alu = apellido_alu;
-		this.año_alu = año_alu;
+		this.anio_alu = anio_alu;
 	}
 
 	public int getId_ppff() {
@@ -86,24 +83,14 @@ public class PPFF {
 		this.apellido_alu = apellido_alu;
 	}
 
-	public String getAño_alu() {
-		return año_alu;
+	public String getAnio_alu() {
+		return anio_alu;
 	}
 
-	public void setAño_alu(String año_alu) {
-		this.año_alu = año_alu;
+	public void setAnio_alu(String anio_alu) {
+		this.anio_alu = anio_alu;
 	}
-	@JsonManagedReference
-	@OneToMany(mappedBy = "objPPFF")
-    private List<IngresoPPFF> ingresosPadres;
-
-	public List<IngresoPPFF> getIngresosPadres() {
-		return ingresosPadres;
-	}
-
-	public void setIngresosPadres(List<IngresoPPFF> ingresosPadres) {
-		this.ingresosPadres = ingresosPadres;
-	}
+	
 	
 	
 

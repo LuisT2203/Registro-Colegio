@@ -1,5 +1,6 @@
 package com.colegio.demo.interfaces;
-import java.sql.Date;
+
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -13,8 +14,8 @@ import com.colegio.demo.modelo.IngresoPersonaExterna;
 @Repository
 public interface IIngresoPE extends CrudRepository<IngresoPersonaExterna, Integer> {
 	@Query("SELECT i FROM IngresoPersonaExterna i WHERE i.fecha = :fecha")
-    List<IngresoPersonaExterna> listarIngresoPEPorFecha(@Param("fecha") Date fecha);
+    List<IngresoPersonaExterna> listarIngresoPEPorFecha(@Param("fecha") LocalDate fecha);
 	
-	@Query("SELECT i FROM IngresoPersonaExterna i WHERE i.id_personaE = :id_personaE")
+	@Query("SELECT i FROM IngresoPersonaExterna i WHERE i.personaE.id_personaE = :id_personaE")
     List<IngresoPersonaExterna> BuscarPersonalId(@Param("id_personaE") int id_personaE);
 }
