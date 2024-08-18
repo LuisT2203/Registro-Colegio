@@ -32,7 +32,7 @@ import com.colegio.demo.modelo.PersonalColegio;
 
 @RestController
 @RequestMapping(value = "ControladorPC", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://registro-colegio-angular.vercel.app")
 public class ControladorPC {
 	@Autowired
 	private IPersonalColegioService service;

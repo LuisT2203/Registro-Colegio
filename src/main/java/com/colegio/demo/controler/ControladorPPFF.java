@@ -31,7 +31,7 @@ import com.colegio.demo.modelo.IngresoPersonalColegio;
 
 @RestController
 @RequestMapping(value = "ControladorPPFF", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://registro-colegio-angular.vercel.app")
 public class ControladorPPFF {
 	@Autowired
 	private IppffService service;

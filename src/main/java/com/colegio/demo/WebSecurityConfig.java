@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-public class WebSecurityConfig {
+public class WebSecurityConfig implements WebMvcConfigurer {
 
 	/*
 	 * @Bean UserDetailsService userDetailsService() { return new
@@ -55,14 +55,14 @@ public class WebSecurityConfig {
 	 * 
 	 * return http.build();
 	 * 
-	 * 
-	 * 
-	 * } // Configuración global de CORS
-	 * 
-	 * @Override public void addCorsMappings(CorsRegistry registry) {
-	 * registry.addMapping("/**") .allowedOrigins("http://localhost:4200")
-	 * .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-	 * .allowedHeaders("*") .allowCredentials(true); }
+	 * }
 	 */
+	   // Configuración global de CORS
+	 
+	  @Override public void addCorsMappings(CorsRegistry registry) {
+	  registry.addMapping("/**") .allowedOrigins("https://registro-colegio-angular.vercel.app")
+	  .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+	 .allowedHeaders("*") .allowCredentials(true); }
+	 
 
 }

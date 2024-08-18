@@ -28,7 +28,7 @@ import com.colegio.demo.modelo.PersonaExterna;
 
 @RestController
 @RequestMapping(value = "ControladorPE", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://registro-colegio-angular.vercel.app")
 public class ControladorPE {
 	@Autowired
 	private IPersonaExternaService service;
