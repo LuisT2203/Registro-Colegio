@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Gestor de docentes</title>		
+	</head>
+	<body>
+		<header>
+			<h1 style="text-align: center;" >Spring Security</h1>
+			<p style="text-align: center;">
+				<a th:href="@{/inicio}">Inicio</a>|
+				<a th:href="@{/nosotros}">Nosotros</a>|
+				<a th:href="@{/contacto}">Contacto</a>|
+				<a th:href="@{/usuario/registro}">Registrarse</a> |
+				<a th:href="@{/intranet}">Intranet</a>
+			</p>
+			<hr/>
+		</header>
+		<form method="post" th:action="@{/usuario/registro}"
+			th:object="${usuario}">
+			<p>
+				<label>Usuario</label>
+				<input type="email" th:field="*{correo}"/>
+			</p>
+			<p>
+				<label>Contraseña</label>
+				<input type="password" th:field="*{clave}"/>
+			</p>
+			<p>
+				<label>Tipo</label>
+				<input type="text" th:field="*{tipo}"/>
+			</p>
+			<p>				
+				<input type="submit" value="Registrar"/>
+			</p>
+		</form>		
+		<footer>
+			<hr/>
+			<p>Derechos reservados 2024</p>
+		</footer>
+	</body>
+</html>
