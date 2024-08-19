@@ -32,7 +32,7 @@ import com.colegio.demo.modelo.PersonalColegio;
 
 @RestController
 @RequestMapping(value = "ControladorPC", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "https://registro-colegio-angular.vercel.app")
+@CrossOrigin(origins = "*")
 public class ControladorPC {
 	@Autowired
 	private IPersonalColegioService service;
@@ -134,8 +134,7 @@ public class ControladorPC {
 	    } else if (id_personal != null) {
 	        return listarIngresoPorID(id_personal);
 	    } else {
-	        LocalDate fechaActual = LocalDate.now();
-	        return listarIngresoPorFecha(fechaActual);
+	        throw new IllegalArgumentException("Debe proporcionarse una fecha o un ID de personal.");
 	    }
 	}
 

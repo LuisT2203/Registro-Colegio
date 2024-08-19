@@ -16,15 +16,14 @@ public class RegistroColegioApplication {
 		SpringApplication.run(RegistroColegioApplication.class, args);
 	}
 	
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOriginPatterns("https://registro-colegio-angular.vercel.app")
-				.allowedMethods("*").allowedHeaders("*");
-			}
-		};
-	}
+	/*
+	 * @Bean public WebMvcConfigurer corsConfigurer() { return new
+	 * WebMvcConfigurer() {
+	 * 
+	 * @Override public void addCorsMappings(CorsRegistry registry) {
+	 * registry.addMapping("/**").allowedOriginPatterns(
+	 * "https://registro-colegio-angular.vercel.app")
+	 * .allowedMethods("*").allowedHeaders("*"); } }; }
+	 */
 
 }

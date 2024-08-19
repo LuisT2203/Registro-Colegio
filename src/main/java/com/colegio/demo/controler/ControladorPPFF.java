@@ -31,7 +31,7 @@ import com.colegio.demo.modelo.IngresoPersonalColegio;
 
 @RestController
 @RequestMapping(value = "ControladorPPFF", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "https://registro-colegio-angular.vercel.app")
+@CrossOrigin(origins = "*")
 public class ControladorPPFF {
 	@Autowired
 	private IppffService service;
@@ -140,7 +140,7 @@ public class ControladorPPFF {
 	}
 
 	@GetMapping("/editarIPPFF/{id_ingresoPPFF}")
-	public IngresoPPFF editarI(@PathVariable ("Id_ppff") int id_ingresoPPFF) {
+	public IngresoPPFF editarI(@PathVariable ("id_ingresoPPFF") int id_ingresoPPFF) {
 		return serviceI.listarId(id_ingresoPPFF);
 		
 	}

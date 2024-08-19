@@ -15,7 +15,7 @@ import com.colegio.demo.Dto.UsuarioDTO;
 
 @RestController
 @RequestMapping("/api/usuario")
-@CrossOrigin(origins = "https://registro-colegio-angular.vercel.app")
+@CrossOrigin(origins = "*")
 public class UsuarioController {
 
     @Autowired
