@@ -93,8 +93,7 @@ public class ControladorPE {
 		} else if (id_personaE != null) {
 			return listarIngresoPorID(id_personaE);
 		} else {
-			LocalDate fechaActual = LocalDate.now();
-			return listarIngresoPorFecha(fechaActual);
+			throw new IllegalArgumentException("Debe proporcionarse una fecha o un ID de personal.");
 		}
 	}
 

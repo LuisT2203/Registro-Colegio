@@ -88,8 +88,7 @@ public class ControladorPPFF {
 		} else if (id_ppff != null) {
 			return listarIngresoPorID(id_ppff);
 		} else {
-			LocalDate fechaActual = LocalDate.now();
-			return listarIngresoPorFecha(fechaActual);
+			throw new IllegalArgumentException("Debe proporcionarse una fecha o un ID de personal.");
 		}
 	}
 
