@@ -8,5 +8,6 @@
  * 
  * @GetMapping(value={"/","/index"}) public String idx() { return "index"; }
  * 
- * @GetMapping(value={"/login"}) public String login() { return "login"; } }
+ * @GetMapping(value={"/api/usuario"}) public String login() { return "login"; }
+ * }
  */

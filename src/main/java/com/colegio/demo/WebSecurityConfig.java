@@ -30,7 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class WebSecurityConfig implements WebMvcConfigurer {
 
 	@Autowired
+	private CorsConfig corsConfig;
 	
+	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
 	
 	@Bean 
@@ -61,7 +63,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 	  
 	@Bean 
 	SecurityFilterChain configure(HttpSecurity http) throws Exception {
-			http.cors(withDefaults()) 
+			http.cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource())) 
 				.csrf(crf -> crf.disable())
 				.authorizeHttpRequests(auth -> auth 
 					.requestMatchers("/api/usuario/login").permitAll()
@@ -85,16 +87,15 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 	 
-	/*
-	 * // Configuración global de CORS
-	 * 
-	 * 
-	 * @Override public void addCorsMappings(CorsRegistry registry) {
-	 * registry.addMapping("/**")
-	 * .allowedOrigins("https://registro-colegio-angular.vercel.app")
-	 * .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-	 * .allowedHeaders("*") .allowCredentials(false); }
-	 */
+	
+	  // Configuración global de CORS
+		/*
+		 * 
+		 * @Override public void addCorsMappings(CorsRegistry registry) {
+		 * registry.addMapping("/**") .allowedOrigins("*") .allowedMethods("*")
+		 * .allowedHeaders("*") .allowCredentials(false); }
+		 */
+	 
 		  
 		 
 }

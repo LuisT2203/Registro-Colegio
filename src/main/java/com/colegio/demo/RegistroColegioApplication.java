@@ -19,13 +19,7 @@ public class RegistroColegioApplication {
 	
 	
 	
-	  @Bean public WebMvcConfigurer corsConfigurer() { return new
-	  WebMvcConfigurer() {
-	  
-		  @CrossOrigin
-	  @Override public void addCorsMappings(CorsRegistry registry) {
-	  registry.addMapping("/**").allowedOriginPatterns("*")
-	  .allowedMethods("*").allowedHeaders("*"); } }; }
+	 
 	 
 	 
 
