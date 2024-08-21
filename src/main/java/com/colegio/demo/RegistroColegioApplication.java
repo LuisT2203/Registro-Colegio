@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,9 +22,9 @@ public class RegistroColegioApplication {
 	  @Bean public WebMvcConfigurer corsConfigurer() { return new
 	  WebMvcConfigurer() {
 	  
+		  @CrossOrigin
 	  @Override public void addCorsMappings(CorsRegistry registry) {
-	  registry.addMapping("/**").allowedOriginPatterns(
-	  "https://registro-colegio-angular.vercel.app")
+	  registry.addMapping("/**").allowedOriginPatterns("*")
 	  .allowedMethods("*").allowedHeaders("*"); } }; }
 	 
 	 
