@@ -154,7 +154,7 @@ public class ControladorPPFF {
 	 */
 
 	@DeleteMapping("/eliminarIPPFF/{id_ingresoPPFF}")
-	public IngresoPPFF deleteI( @PathVariable ("Id_ppff") int id_ingresoPPFF) {
+	public IngresoPPFF deleteI( @PathVariable ("id_ingresoPPFF") int id_ingresoPPFF) {
 		return serviceI.Borrar(id_ingresoPPFF);
 		
 	}
