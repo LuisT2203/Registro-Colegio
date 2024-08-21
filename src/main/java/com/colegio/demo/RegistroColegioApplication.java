@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@SpringBootApplication(exclude=SecurityAutoConfiguration.class)
+@SpringBootApplication
 @ComponentScan(basePackages="com.colegio")
 public class RegistroColegioApplication {
 
