@@ -87,13 +87,13 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 	 
 	   // Configuración global de CORS
 		
-		/*
-		 * @Override public void addCorsMappings(CorsRegistry registry) {
-		 * registry.addMapping("/**")
-		 * .allowedOrigins("https://registro-colegio-angular.vercel.app")
-		 * .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-		 * .allowedHeaders("*") .allowCredentials(false); }
-		 */
+		
+		  @Override public void addCorsMappings(CorsRegistry registry) {
+		  registry.addMapping("/**")
+		  .allowedOrigins("https://registro-colegio-angular.vercel.app")
+		  .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+		  .allowedHeaders("*") .allowCredentials(false); }
+		 
 		  
 		 
 }
