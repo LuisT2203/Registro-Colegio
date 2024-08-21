@@ -64,7 +64,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 			http.cors(withDefaults()) 
 				.csrf(crf -> crf.disable())
 				.authorizeHttpRequests(auth -> auth 
-					.requestMatchers("/login").permitAll()
+					.requestMatchers("/api/usuario/login").permitAll()
 					.anyRequest().authenticated()
 					
 						) 
