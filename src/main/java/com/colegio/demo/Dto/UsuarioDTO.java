@@ -6,14 +6,14 @@ public class UsuarioDTO {
 	
 	
 	private Integer id;
-	private String correo;
+	private String usuario;
 	private String clave;
 	private String tipo;
 	
-	public UsuarioDTO(Integer id, String correo, String clave, String tipo) {
+	public UsuarioDTO(Integer id, String usuario, String clave, String tipo) {
 		super();
 		this.id = id;
-		this.correo = correo;
+		this.usuario = usuario;
 		this.clave = clave;
 		this.tipo = tipo;
 	}
@@ -30,12 +30,12 @@ public class UsuarioDTO {
 		this.id = id;
 	}
 
-	public String getCorreo() {
-		return correo;
+	public String getUsuario() {
+		return usuario;
 	}
 
-	public void setCorreo(String correo) {
-		this.correo = correo;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 
 	public String getClave() {
@@ -59,8 +59,8 @@ public class UsuarioDTO {
 		StringBuilder builder = new StringBuilder();
 		builder.append("UsuarioDTO [id=");
 		builder.append(id);
-		builder.append(", correo=");
-		builder.append(correo);
+		builder.append(", usuario=");
+		builder.append(usuario);
 		builder.append(", clave=");
 		builder.append(clave);
 		builder.append(", tipo=");

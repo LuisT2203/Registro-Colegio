@@ -29,7 +29,7 @@ public class UsuarioService implements IUsuarioService {
 		Usuario usuario = new Usuario(
 				
 				usuarioDTO.getId(),
-				usuarioDTO.getCorreo(),
+				usuarioDTO.getUsuario(),
 				usuarioDTO.getTipo(),
 				
 				this.passwordEncoder.encode(usuarioDTO.getClave())
