@@ -13,9 +13,9 @@ import com.colegio.demo.modelo.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	
-	Optional<Usuario> findOneByCorreoAndClave(String correo,String clave);
+	Optional<Usuario> findOneByUsuarioAndClave(String usuario,String clave);
 	
-	public Usuario findByCorreo (String correo); 
+	public Usuario findByUsuario (String usuario); 
 	
 	
 	

@@ -37,7 +37,7 @@ public class UsuarioService implements IUsuarioService {
 				);
 		repository.save(usuario);
 		
-		return usuario.getCorreo();
+		return usuario.getUsuario();
 	}
 	
 		
@@ -54,13 +54,13 @@ public class UsuarioService implements IUsuarioService {
 	@Override
 	public LoginResponse loginUsuario(LoginDTO loginDTO) {
 		String msg = "";
-		Usuario usuario1 = repository.findByCorreo(loginDTO.getCorreo());
+		Usuario usuario1 = repository.findByUsuario(loginDTO.getUsuario());
 		if(usuario1 != null) {
 			String password = loginDTO.getClave();
 			String encodedPassword = usuario1.getClave();
 			Boolean isPwdRight = passwordEncoder.matches(password, encodedPassword);
 			if(isPwdRight) {
-				Optional<Usuario> usuario = repository.findOneByCorreoAndClave(loginDTO.getCorreo(),encodedPassword);
+				Optional<Usuario> usuario = repository.findOneByUsuarioAndClave(loginDTO.getUsuario(),encodedPassword);
 				if(usuario.isPresent()) {
 					return new LoginResponse("Login Succes",true);
 				}else {

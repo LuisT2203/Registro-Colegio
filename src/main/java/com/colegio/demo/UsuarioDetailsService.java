@@ -23,11 +23,11 @@ import
   @Override public UserDetails loadUserByUsername(String username) throws
   UsernameNotFoundException {
   
-  Usuario usuario = Usuariorepository.findByCorreo(username); 
+  Usuario usuario = Usuariorepository.findByUsuario(username); 
   if(usuario == null) {
   throw new UsernameNotFoundException(username); 
   } 
-  return new User(usuario.getCorreo(),usuario.getClave(), new ArrayList<>()); 
+  return new User(usuario.getUsuario(),usuario.getClave(), new ArrayList<>()); 
   }
   
   }

@@ -21,18 +21,20 @@ public class JwtUtilService {
     private static final long JWT_TIME_VALIDITY = 1000 * 60 * 15;
     private static final long JWT_TIME_REFRESH_VALIDATE = 1000 * 60 * 60 * 24;
 
-    public String generateToken(UserDetails userDetails,String role) {
+    public String generateToken(UserDetails userDetails,String tipo) {
         return Jwts.builder()
             .subject(userDetails.getUsername())
+            .claim("tipo", tipo)
             .issuedAt(new Date(System.currentTimeMillis()))
             .expiration(new Date(System.currentTimeMillis() + JWT_TIME_VALIDITY))
             .signWith(getSigningKey())
             .compact();
     }
 
-    public String generateRefreshToken(UserDetails userDetails, String role) {
+    public String generateRefreshToken(UserDetails userDetails, String tipo) {
         return Jwts.builder()
             .subject(userDetails.getUsername())
+            .claim("tipo", tipo)
             .issuedAt(new Date(System.currentTimeMillis()))
             .expiration(new Date(System.currentTimeMillis() + JWT_TIME_REFRESH_VALIDATE))
             .signWith(getSigningKey())

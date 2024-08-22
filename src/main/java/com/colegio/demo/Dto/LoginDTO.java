@@ -2,12 +2,12 @@ package com.colegio.demo.Dto;
 
 public class LoginDTO {
 	
-	private String correo;
+	private String usuario;
 	private String clave;
 	
-	public LoginDTO(String correo, String clave) {
+	public LoginDTO(String usuario, String clave) {
 		super();
-		this.correo = correo;
+		this.usuario = usuario;
 		this.clave = clave;
 	}
 
@@ -15,12 +15,12 @@ public class LoginDTO {
 		super();
 	}
 
-	public String getCorreo() {
-		return correo;
+	public String getUsuario() {
+		return usuario;
 	}
 
-	public void setCorreo(String correo) {
-		this.correo = correo;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 
 	public String getClave() {
@@ -34,8 +34,8 @@ public class LoginDTO {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("LoginDTO [correo=");
-		builder.append(correo);
+		builder.append("LoginDTO [usuario=");
+		builder.append(usuario);
 		builder.append(", clave=");
 		builder.append(clave);
 		builder.append("]");

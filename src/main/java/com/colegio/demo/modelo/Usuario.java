@@ -14,7 +14,7 @@ public class Usuario {
 	@Column(name = "id_usu", length=45)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String correo;
+	private String usuario;
 	private String tipo;
 	private String clave;
 	
@@ -25,10 +25,10 @@ public class Usuario {
 		super();
 	}
 
-	public Usuario(Integer id, String correo,String tipo, String clave ) {
+	public Usuario(Integer id, String usuario,String tipo, String clave ) {
 		super();
 		this.id = id;
-		this.correo = correo;
+		this.usuario = usuario;
 		this.tipo = tipo;
 		this.clave = clave;
 	}
@@ -41,12 +41,12 @@ public class Usuario {
 		this.id = id;
 	}
 
-	public String getCorreo() {
-		return correo;
+	public String getUsuario() {
+		return usuario;
 	}
 
-	public void setCorreo(String correo) {
-		this.correo = correo;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 
 	public String getClave() {
@@ -70,8 +70,8 @@ public class Usuario {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Usuario [id=");
 		builder.append(id);
-		builder.append(", correo=");
-		builder.append(correo);
+		builder.append(", usuario=");
+		builder.append(usuario);
 		builder.append(", clave=");
 		builder.append(clave);
 		builder.append(", tipo=");

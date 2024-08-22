@@ -1,5 +1,7 @@
 package com.colegio.demo.controler;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,11 +58,11 @@ public class UsuarioController {
 		try {
 		//Autenticamos el usuario con authenticationManager
 		this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-				loginDTO.getCorreo(), loginDTO.getClave()
+				loginDTO.getUsuario(), loginDTO.getClave()
 				));
 		//validar en la bd
-		UserDetails userDetails = this.userDetailsService.loadUserByUsername(loginDTO.getCorreo());
-		Usuario usuario = usuRepo.findByCorreo(loginDTO.getCorreo());
+		UserDetails userDetails = this.userDetailsService.loadUserByUsername(loginDTO.getUsuario());
+		Usuario usuario = usuRepo.findByUsuario(loginDTO.getUsuario());
 		//generar token
 		String jwt = this.jwtUtilService.generateToken(userDetails, usuario.getTipo());
 		String refreshToken = this.jwtUtilService.generateRefreshToken(userDetails, usuario.getTipo());
@@ -73,6 +75,35 @@ public class UsuarioController {
 		}catch (Exception e) {
 			return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Error Athentication::" + e.getMessage());
 		}
+	}
+		
+		@PostMapping(path="/refresh")
+		public ResponseEntity<?> loginUsuario(@RequestBody Map<String, String> request){
+			String refreshToken = request.get("refreshToken");
+			
+			try {
+			
+					String username = jwtUtilService.extractUsername(refreshToken);
+					UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+					Usuario usuario = usuRepo.findByUsuario(username);
+					
+					if(jwtUtilService.validateToken(refreshToken, userDetails)) {
+						String newJwt = jwtUtilService.generateToken(userDetails, usuario.getTipo());
+						String newRefreshToken = jwtUtilService.generateRefreshToken(userDetails, usuario.getTipo());
+						
+						
+						AuthResponseDto authResponseDto = new AuthResponseDto();
+						authResponseDto.setToken(newJwt);
+						authResponseDto.setRefreshToken(newRefreshToken);
+						
+						return new ResponseEntity<>(authResponseDto, HttpStatus.OK);
+					}else {
+						return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Refresh Token");
+					}
+				
+			}catch (Exception e) {
+				return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Error Refresh Token::" + e.getMessage());
+			}
 		
 		
 	}
