@@ -78,52 +78,7 @@ public class ControladorPC {
 		
 	}
 
-	/*
-	 * // INGRESO PPFF
-	 * 
-	 * @GetMapping("/listarIngresoPC") public List<IngresoPersonalColegio>
-	 * listarI(@RequestParam(name = "fechaBusqueda", required = false) String
-	 * fechaBusqueda,
-	 * 
-	 * @RequestParam(name = "id_personal", required = false) Integer id_personal,
-	 * Model model) {
-	 * 
-	 * 
-	 * 
-	 * List<PersonalColegio> pcs = service.listarPersonal(); // lista de personal de
-	 * Personal Colegio model.addAttribute("pc", new PersonalColegio());
-	 * model.addAttribute("Ipc", new IngresoPersonalColegio());//Objeto vacio para
-	 * crear nuevos registros model.addAttribute("pcs", pcs); //agregando al modelo
-	 * la lista de personal colegio para manipular los nombres
-	 * 
-	 * // Método para obtener listado según la fecha LocalDate fecha;
-	 * 
-	 * if (fechaBusqueda != null && !fechaBusqueda.isEmpty()) { // Si se ingresó una
-	 * fecha, conviértela a java.sql.Date fecha = LocalDate.parse(fechaBusqueda);
-	 * List<IngresoPersonalColegio> IpcsPorFecha =
-	 * serviceI.listarIngresoPCPorFecha(fecha);//lista segun la fecha ingresada for
-	 * (int i = 0; i < IpcsPorFecha.size(); i++) {
-	 * IpcsPorFecha.get(i).setNumeroRegistro(i + 1); } int contadorRegistros =
-	 * IpcsPorFecha.size(); // declarando contador usamos size para sacar la
-	 * cantidad total de registros por fecha model.addAttribute("contadorRegistros",
-	 * contadorRegistros); model.addAttribute("IpcsPorFecha", IpcsPorFecha);
-	 * //agregando la lista al modelo return
-	 * serviceI.listarIngresoPCPorFecha(fecha); } else if (id_personal != null){
-	 * List<IngresoPersonalColegio> IpcsporID =
-	 * serviceI.BuscarPersonalId(id_personal); for (int i = 0; i < IpcsporID.size();
-	 * i++) { IpcsporID.get(i).setNumeroRegistro(i + 1); } int contadorRegistrosID =
-	 * IpcsporID.size(); // declarando contador usamos size para sacar la cantidad
-	 * total de registros por ID model.addAttribute("contadorRegistrosID",
-	 * contadorRegistrosID); model.addAttribute("IpcsporID", IpcsporID); // Agrega
-	 * el ingreso de personal al modelo return
-	 * serviceI.BuscarPersonalId(id_personal); }else{ // Si no se proporcionó ningún
-	 * parámetro válido, mostrar un mensaje de error o redirigir a otra página
-	 * LocalDate fechaActual = LocalDate.now(); return
-	 * serviceI.listarIngresoPCPorFecha(fechaActual); // Otra vista que muestre un
-	 * mensaje de erro
-	 * 
-	 * } }
-	 */
+	
 
 	@GetMapping("/listarIngresoPC")
 	public List<IngresoPersonalColegio> listarIngresoPC(@RequestParam(name = "fechaBusqueda", required = false) String fechaBusqueda,
@@ -203,8 +158,6 @@ public class ControladorPC {
 		
 		
 	}
-
-	
 
 	@DeleteMapping("/eliminarIPC/{id_ingresoPersonal}")
 	public IngresoPersonalColegio deleteI(@PathVariable ("id_ingresoPersonal") int id_ingresoPersonal) {
