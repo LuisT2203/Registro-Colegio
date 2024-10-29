@@ -13,9 +13,9 @@ import com.colegio.demo.modelo.IngresoPersonaExterna;
 
 @Repository
 public interface IIngresoPE extends CrudRepository<IngresoPersonaExterna, Integer> {
-	@Query("SELECT i FROM IngresoPersonaExterna i WHERE i.fecha = :fecha")
+	@Query("SELECT i FROM IngresoPersonaExternaDTO i WHERE i.fecha = :fecha")
     List<IngresoPersonaExterna> listarIngresoPEPorFecha(@Param("fecha") LocalDate fecha);
 	
-	@Query("SELECT i FROM IngresoPersonaExterna i WHERE i.personaE.id_personaE = :id_personaE")
+	@Query("SELECT i FROM IngresoPersonaExternaDTO i WHERE i.personaE.id_personaE = :id_personaE")
     List<IngresoPersonaExterna> BuscarPersonalId(@Param("id_personaE") int id_personaE);
 }

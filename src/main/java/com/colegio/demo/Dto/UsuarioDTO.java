@@ -1,13 +1,19 @@
 package com.colegio.demo.Dto;
 
 
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
+@Data
 public class UsuarioDTO {
 	
 	
 	private Integer id;
+	@NotBlank(message = "El usuario no puede ser vacío")
 	private String usuario;
+	@NotBlank(message = "La clave no puede ser vacía")
 	private String clave;
+	@NotBlank(message = "El tipo no puede ser vacío")
 	private String tipo;
 	
 	public UsuarioDTO(Integer id, String usuario, String clave, String tipo) {
@@ -22,37 +28,6 @@ public class UsuarioDTO {
 		super();
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
-
-	public String getClave() {
-		return clave;
-	}
-
-	public void setClave(String clave) {
-		this.clave = clave;
-	}
-
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
 
 	@Override
 	public String toString() {

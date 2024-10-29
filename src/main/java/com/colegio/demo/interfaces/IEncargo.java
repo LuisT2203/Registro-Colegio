@@ -12,10 +12,10 @@ import com.colegio.demo.modelo.Encargo;
 @Repository
 public interface IEncargo extends CrudRepository<Encargo,Integer> {
 	
-	@Query("SELECT i From Encargo i WHERE i.fecha_enc = :fecha_enc")
+	@Query("SELECT i From EncargoDTO i WHERE i.fecha_enc = :fecha_enc")
 	List<Encargo> ListarEncargosPorFecha(@Param("fecha_enc") LocalDate fecha_enc);
 	
-	@Query("From Encargo e WHERE e.encargoNom like %:encargoNom%")
+	@Query("From EncargoDTO e WHERE e.encargoNom like %:encargoNom%")
 	List<Encargo> ListarEncargosPorNombre(@Param("encargoNom") String encargoNom);
 
 }

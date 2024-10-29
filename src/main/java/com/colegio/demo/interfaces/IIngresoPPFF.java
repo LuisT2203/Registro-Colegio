@@ -13,9 +13,9 @@ import com.colegio.demo.modelo.IngresoPPFF;
 @Repository
 public interface IIngresoPPFF extends CrudRepository<IngresoPPFF, Integer> {
 	// Query personalizado para obtener ingresos por fecha
-    @Query("SELECT i FROM IngresoPPFF i WHERE i.fecha = :fecha")
+    @Query("SELECT i FROM IngresoPPFFDTO i WHERE i.fecha = :fecha")
     List<IngresoPPFF> listarIngresoPPFFPorFecha(@Param("fecha") LocalDate fecha);
     
-    @Query("SELECT i FROM IngresoPPFF i WHERE i.padre.id_ppff = :id_ppff")
+    @Query("SELECT i FROM IngresoPPFFDTO i WHERE i.padre.id_ppff = :id_ppff")
     List<IngresoPPFF> BuscarPersonalId(@Param("id_ppff") int id_ppff);
 }

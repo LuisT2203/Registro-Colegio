@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 import org.springframework.security.authentication.AuthenticationManager;
 
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,11 +36,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
 	
-	@Bean 
-	UserDetailsService userDetailsService() 
-	{ 
-		return new UsuarioDetailsService(); 
-	}
+	@Autowired
+	private UsuarioDetailsService usuarioDetailsService;
 	  
 	 
 
@@ -48,6 +46,13 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 		return new BCryptPasswordEncoder();
 	}
 
+	@Bean
+	public DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+		authProvider.setUserDetailsService(usuarioDetailsService); // Aquí se le dice que use tu servicio
+		authProvider.setPasswordEncoder(passwordEncoder()); // También se le configura el encoder de contraseñas
+		return authProvider;
+	}
 	
 	  
 	@Bean 

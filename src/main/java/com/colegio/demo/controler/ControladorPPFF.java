@@ -3,10 +3,22 @@ package com.colegio.demo.controler;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.colegio.demo.Dto.IngresoPPFFDTO;
+import com.colegio.demo.Dto.IngresoPersonalColegioDTO;
+import com.colegio.demo.Dto.PPFFDTO;
+import com.colegio.demo.Dto.PersonalColegioDTO;
+import com.colegio.demo.modelo.PersonalColegio;
+import com.colegio.demo.utils.MensajeResponse;
+import com.colegio.demo.utils.ModeloNotFoundException;
+import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,40 +50,88 @@ public class ControladorPPFF {
 	@Autowired
 	private IIngresoPPFFService serviceI;
 
+	@Autowired
+	private ModelMapper mapper;
 	/// PPFF
 	@GetMapping("/listarPPFF")
-	public List<PPFF> listar(Model model) {
-		return service.listarPPFF();
+	public ResponseEntity<?> listar() {
+		try {
+			List<PPFF> lista = service.listarPPFF();
+			if(lista.isEmpty()) {
+				return new ResponseEntity<>(
+						MensajeResponse.builder()
+								.mensaje("No hay personales")
+								.object(null)
+								.build(), HttpStatus.NO_CONTENT);
+			}else {
+				List<PPFFDTO> lista2 = lista.stream()
+						.map(m -> mapper.map(m, PPFFDTO.class))
+						.collect(Collectors.toList());
+				return new ResponseEntity<> (
+						MensajeResponse.builder()
+								.mensaje("Si hay registro de personales")
+								.object(lista2)
+								.build(), HttpStatus.OK);
+
+			}
+		}catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
 	}
 
-	@GetMapping("/newPPFF")
-	public String agregar(Model model) {
-		model.addAttribute("ppff", new PPFF());
-		return "PPFF";
-	}
 
 	@PostMapping(value="/savePPFF",consumes= MediaType.APPLICATION_JSON_VALUE)
-	public PPFF guardar(@RequestBody PPFF p) {
-		return service.Guardar(p);
-		
+	public ResponseEntity<?> guardar(@Valid @RequestBody PPFFDTO bean) {
+		try {
+			PPFF pf = mapper.map(bean, PPFF.class);
+			PPFF pf1 = service.Guardar(pf);
+			PPFFDTO pfdto = mapper.map(pf1, PPFFDTO.class);
+			return new ResponseEntity<>(MensajeResponse.builder()
+					.mensaje("Se agrego correctamente el padre")
+					.object(pfdto).build(),HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(MensajeResponse.builder().
+					mensaje(e.getMessage()).object(null).build(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	@PutMapping(value="/updatePPFF",consumes= MediaType.APPLICATION_JSON_VALUE)
-	public PPFF Actualizar(@RequestBody PPFF p) {
-		return service.Guardar(p);
-		
+	public ResponseEntity<?> actualizar(@Valid @RequestBody PPFFDTO bean) {
+		try {
+			PPFF pf = mapper.map(bean, PPFF.class);
+			PPFF pf1 = service.Guardar(pf);
+			PPFFDTO pfdto = mapper.map(pf1, PPFFDTO.class);
+			return new ResponseEntity<>(MensajeResponse.builder()
+					.mensaje("Se agrego correctamente el padre")
+					.object(pfdto).build(),HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(MensajeResponse.builder().
+					mensaje(e.getMessage()).object(null).build(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@GetMapping("/editarPPFF/{Id_ppff}")
-	public PPFF editar(@PathVariable ("Id_ppff") int Id_ppff) {
-		return service.listarId(Id_ppff);
+	public ResponseEntity<?> editar(@PathVariable ("Id_ppff") int Id_ppff) {
+		PPFF pf = service.listarId(Id_ppff);
+		if(pf == null) {
+			return new ResponseEntity<>(MensajeResponse.builder().mensaje("Personal no encontrado").object(null).build(), HttpStatus.NOT_FOUND);
+		}
+		PPFFDTO pfdto = mapper.map(pf, PPFFDTO.class);
+		return new ResponseEntity<>(pfdto, HttpStatus.OK);
 		
 	}
 
 
 	@DeleteMapping("/eliminarPPFF/{Id_ppff}")
-	public PPFF delete(@PathVariable ("Id_ppff") int Id_ppff) {
-		return service.Borrar(Id_ppff);
+	public ResponseEntity<?> delete(@PathVariable ("Id_ppff") int Id_ppff) {
+		PPFF pf = service.listarId(Id_ppff);
+		if(pf == null) {
+			throw new ModeloNotFoundException("id personal no encontrado"+Id_ppff);
+		}
+		service.Borrar(Id_ppff);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
 	}
 	
@@ -79,16 +139,58 @@ public class ControladorPPFF {
 	
 
 	@GetMapping("/listarIPPFF")
-	public List<IngresoPPFF> listarIngresoPPFF(
+	public ResponseEntity<?> listarIngresoPPFF(
 			@RequestParam(name = "fechaBusqueda", required = false) String fechaBusqueda,
 			@RequestParam(name = "id_ppff", required = false) Integer id_ppff) {
-		if (fechaBusqueda != null && !fechaBusqueda.isEmpty()) {
-			LocalDate fecha = LocalDate.parse(fechaBusqueda);
-			return listarIngresoPorFecha(fecha);
-		} else if (id_ppff != null) {
-			return listarIngresoPorID(id_ppff);
-		} else {
-			throw new IllegalArgumentException("Debe proporcionarse una fecha o un ID de personal.");
+		try {
+
+			List<IngresoPPFF> ingresos;
+
+			if (fechaBusqueda != null && !fechaBusqueda.isEmpty()) {
+				LocalDate fecha = LocalDate.parse(fechaBusqueda);
+				ingresos = listarIngresoPorFecha(fecha);
+			} else if (id_ppff != null) {
+				ingresos = listarIngresoPorID(id_ppff);
+			} else {
+				return new ResponseEntity<>(
+						MensajeResponse.builder()
+								.mensaje("Debe proporcionarse una fecha o un ID de personal.")
+								.object(null)
+								.build(),
+						HttpStatus.BAD_REQUEST
+				);
+			}
+			// Si no hay resultados
+			if (ingresos.isEmpty()) {
+				return new ResponseEntity<>(
+						MensajeResponse.builder()
+								.mensaje("No hay ingresos registrados para los parámetros proporcionados.")
+								.object(null)
+								.build(),
+						HttpStatus.NO_CONTENT
+				);
+			}
+			// Convertir a DTO
+			List<IngresoPPFFDTO> ingresosDTO = ingresos.stream()
+					.map(ingreso -> mapper.map(ingreso, IngresoPPFFDTO.class))
+					.collect(Collectors.toList());
+
+			return new ResponseEntity<>(
+					MensajeResponse.builder()
+							.mensaje("Registros encontrados")
+							.object(ingresosDTO)
+							.build(),
+					HttpStatus.OK
+			);
+
+		} catch (Exception e) {
+			return new ResponseEntity<>(
+					MensajeResponse.builder()
+							.mensaje("Error interno del servidor")
+							.object(e.getMessage())
+							.build(),
+					HttpStatus.INTERNAL_SERVER_ERROR
+			);
 		}
 	}
 
@@ -110,52 +212,58 @@ public class ControladorPPFF {
 		}
 	}
 
-	@GetMapping("/newIngresoPPFF")
-	public String agregarI(Model model) {
-		model.addAttribute("Ippff", new IngresoPPFF());
-		return "IPPFF";
-	}
 
 	@PostMapping(value="/saveIPPFF",consumes= MediaType.APPLICATION_JSON_VALUE)
-	public IngresoPPFF guardarI(@RequestBody IngresoPPFF ip) {
-		
-		/* ip.setFecha(LocalDate.now()); */
-		IngresoPPFF guardado = serviceI.Guardar(ip);
-		
-		
-		return guardado;
+	public ResponseEntity<?> guardarI(@Valid @RequestBody IngresoPPFFDTO bean) {
+		try {
+			IngresoPPFF ipf = mapper.map(bean, IngresoPPFF.class);
+			IngresoPPFF ipf1 = serviceI.Guardar(ipf);
+			IngresoPPFFDTO ipfdto = mapper.map(ipf1, IngresoPPFFDTO.class);
+			return new ResponseEntity<>(MensajeResponse.builder()
+					.mensaje("Se agrego correctamente el ingreso personal")
+					.object(ipfdto).build(),HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(MensajeResponse.builder().
+					mensaje(e.getMessage()).object(null).build(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	@PutMapping(value="/updateIPPFF",consumes= MediaType.APPLICATION_JSON_VALUE)
-	public IngresoPPFF actualizarI(@RequestBody IngresoPPFF ip) {
-		
-		ip.setFecha(LocalDate.now());
-		IngresoPPFF guardado = serviceI.Guardar(ip);
-		
-		if(guardado != null) {
-			// LocalDate fechaActual = LocalDate.now();
-			// List<IngresoPPFF> ingresosPorFecha = serviceI.listarIngresoPPFFPorFecha(fechaActual); (retorna la lista con la fecha actual una vez guardado)
+	public ResponseEntity<?> actualizarI(@Valid @RequestBody IngresoPPFFDTO bean) {
+		try {
+			IngresoPPFF ipf = mapper.map(bean, IngresoPPFF.class);
+			IngresoPPFF ipf1 = serviceI.Guardar(ipf);
+			IngresoPPFFDTO ipfdto = mapper.map(ipf1, IngresoPPFFDTO.class);
+			return new ResponseEntity<>(MensajeResponse.builder()
+					.mensaje("Se agrego correctamente el ingreso personal")
+					.object(ipfdto).build(),HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(MensajeResponse.builder().
+					mensaje(e.getMessage()).object(null).build(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return guardado;
 	}
 
 	@GetMapping("/editarIPPFF/{id_ingresoPPFF}")
-	public IngresoPPFF editarI(@PathVariable ("id_ingresoPPFF") int id_ingresoPPFF) {
-		return serviceI.listarId(id_ingresoPPFF);
+	public ResponseEntity<?> editarI(@PathVariable ("id_ingresoPPFF") int id_ingresoPPFF) {
+		IngresoPPFF ipf = serviceI.listarId(id_ingresoPPFF);
+		if(ipf == null) {
+			return new ResponseEntity<>(MensajeResponse.builder().mensaje("Ingreso Padre no encontrado").object(null).build(), HttpStatus.NOT_FOUND);
+		}
+		IngresoPPFF ipfdto = mapper.map(ipf, IngresoPPFF.class);
+		return new ResponseEntity<>(ipfdto, HttpStatus.OK);
 		
 	}
 
-	/*
-	 * @GetMapping("/editarIPPFF/{id_ingresoPPFF}/json")
-	 * 
-	 * @ResponseBody public ResponseEntity<IngresoPPFF> editarJsonI(@PathVariable
-	 * int id_ingresoPPFF) { Optional<IngresoPPFF> Ippff =
-	 * serviceI.listarId(id_ingresoPPFF); return ResponseEntity.ok(Ippff.orElse(new
-	 * IngresoPPFF())); }
-	 */
 
 	@DeleteMapping("/eliminarIPPFF/{id_ingresoPPFF}")
-	public IngresoPPFF deleteI( @PathVariable ("id_ingresoPPFF") int id_ingresoPPFF) {
-		return serviceI.Borrar(id_ingresoPPFF);
+	public ResponseEntity<?> deleteI( @PathVariable ("id_ingresoPPFF") int id_ingresoPPFF) {
+		IngresoPPFF ipf = serviceI.listarId(id_ingresoPPFF);
+		if(ipf == null) {
+			throw new ModeloNotFoundException("ID NO ECONTRADO : "+id_ingresoPPFF);
+		}
+		serviceI.Borrar(id_ingresoPPFF);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
 	}
 }

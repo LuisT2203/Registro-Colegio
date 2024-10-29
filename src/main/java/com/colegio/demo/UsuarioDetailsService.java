@@ -12,7 +12,9 @@ import
   
   import com.colegio.demo.interfaces.UsuarioRepository; import
   com.colegio.demo.modelo.Usuario;
-  
+  import org.springframework.stereotype.Service;
+
+  @Service
   public class UsuarioDetailsService implements UserDetailsService {
   
   @Autowired 
