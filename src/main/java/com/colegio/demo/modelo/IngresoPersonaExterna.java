@@ -111,9 +111,7 @@ public class IngresoPersonaExterna {
 	}
 
 
-	public void setObjPersonaE(PersonaExterna personaE) {
-		this.personaE = personaE;
-	}
+
 
 	public int getNumeroRegistro() {
 		return numeroRegistro;
@@ -124,5 +122,7 @@ public class IngresoPersonaExterna {
 		this.numeroRegistro = numeroRegistro;
 	}
 
-	
+	public void setPersonaE(PersonaExterna personaE) {
+		this.personaE = personaE;
+	}
 }

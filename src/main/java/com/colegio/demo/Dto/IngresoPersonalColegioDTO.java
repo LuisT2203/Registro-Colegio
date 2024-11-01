@@ -24,20 +24,13 @@ public class IngresoPersonalColegioDTO {
 		super();
 	}
 
-	
-
-	public IngresoPersonalColegioDTO(int id_ingresoPersonal, LocalDate fecha, LocalTime hora_ingreso,
-									 LocalTime hora_salida, int numeroRegistro) {
+	public IngresoPersonalColegioDTO(int id_ingresoPersonal, LocalDate fecha, LocalTime hora_ingreso, LocalTime hora_salida, int numeroRegistro, PersonalColegioDTO personal) {
 		super();
 		this.id_ingresoPersonal = id_ingresoPersonal;
-		
 		this.fecha = fecha;
 		this.hora_ingreso = hora_ingreso;
 		this.hora_salida = hora_salida;
 		this.numeroRegistro = numeroRegistro;
+		this.personal = personal;
 	}
-
-
-
-
 }

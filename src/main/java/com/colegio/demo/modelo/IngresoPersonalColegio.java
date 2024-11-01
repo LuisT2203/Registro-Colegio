@@ -31,20 +31,15 @@ public class IngresoPersonalColegio {
 		super();
 	}
 
-	
 
-	public IngresoPersonalColegio(int id_ingresoPersonal,  LocalDate fecha, LocalTime hora_ingreso,
-			LocalTime hora_salida, int numeroRegistro) {
-		super();
+	public IngresoPersonalColegio(int id_ingresoPersonal, LocalDate fecha, LocalTime hora_ingreso, LocalTime hora_salida, int numeroRegistro, PersonalColegio personal) {
 		this.id_ingresoPersonal = id_ingresoPersonal;
-		
 		this.fecha = fecha;
 		this.hora_ingreso = hora_ingreso;
 		this.hora_salida = hora_salida;
 		this.numeroRegistro = numeroRegistro;
+		this.personal = personal;
 	}
-
-
 
 	public int getId_ingresoPersonal() {
 		return id_ingresoPersonal;
@@ -54,13 +49,10 @@ public class IngresoPersonalColegio {
 		this.id_ingresoPersonal = id_ingresoPersonal;
 	}
 
-	
 
-	
-
-	
-
-	
+	public void setPersonal(PersonalColegio personal) {
+		this.personal = personal;
+	}
 
 	public LocalDate getFecha() {
 		return fecha;
@@ -102,9 +94,6 @@ public class IngresoPersonalColegio {
 		return personal;
 	}
 
-	public void setObjPersonal(PersonalColegio personal) {
-		this.personal = personal;
-	}
 	
 	
 	

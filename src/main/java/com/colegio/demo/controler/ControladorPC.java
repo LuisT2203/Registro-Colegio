@@ -105,7 +105,7 @@ public class ControladorPC {
 			PersonalColegio pc1 = service.Guardar(pc);
 			PersonalColegioDTO pcdto = mapper.map(pc1, PersonalColegioDTO.class);
 			return new ResponseEntity<>(MensajeResponse.builder()
-					.mensaje("Se agrego correctamente el personal")
+					.mensaje("Se actualizó correctamente el personal")
 					.object(pcdto).build(),HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(MensajeResponse.builder().
@@ -129,14 +129,18 @@ public class ControladorPC {
 
 	@DeleteMapping("/eliminarPC/{id_personal}")
 	public ResponseEntity<?> eliminar(@PathVariable ("id_personal") int id_personal) {
-		PersonalColegio pc = service.listarId(id_personal);
-		if(pc == null) {
-			throw new ModeloNotFoundException("id personal no encontrado"+id_personal);
+		try {
+			PersonalColegio pc = service.listarId(id_personal);
+			if (pc == null) {
+				return new ResponseEntity<>(MensajeResponse.builder().mensaje("Id no encontrado").object(null).build(), HttpStatus.NOT_FOUND);
+			} else {
+				service.Borrar(id_personal);
+				return new ResponseEntity<>(MensajeResponse.builder().mensaje("Eliminado correctamente").object(pc).build(), HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(MensajeResponse.builder().mensaje("Error al eliminar").object(null).build(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		else{
-			service.Borrar(id_personal);
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
+
 
 
 	}
@@ -242,7 +246,7 @@ public class ControladorPC {
 			IngresoPersonalColegio ipc1 = serviceI.Guardar(ipc);
 			IngresoPersonalColegioDTO ipcdto = mapper.map(ipc1, IngresoPersonalColegioDTO.class);
 			return new ResponseEntity<>(MensajeResponse.builder()
-					.mensaje("Se agrego correctamente el ingreso personal")
+					.mensaje("Se actualizó correctamente el ingreso personal")
 					.object(ipcdto).build(),HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(MensajeResponse.builder().
@@ -265,12 +269,15 @@ public class ControladorPC {
 
 	@DeleteMapping("/eliminarIPC/{id_ingresoPersonal}")
 	public ResponseEntity<?> deleteI(@PathVariable ("id_ingresoPersonal") int id_ingresoPersonal) {
+		try{
 		IngresoPersonalColegio ipc = serviceI.listarId(id_ingresoPersonal);
 		if(ipc == null) {
-			throw new ModeloNotFoundException("ID NO ECONTRADO : "+id_ingresoPersonal);
+			return new ResponseEntity<>(MensajeResponse.builder().mensaje("ID no encontrado").object(null).build(), HttpStatus.NOT_FOUND);
 		}
 		serviceI.Borrar(id_ingresoPersonal);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		
+		return new ResponseEntity<>(MensajeResponse.builder().mensaje("Eliminado correctamente").object(ipc).build(), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(MensajeResponse.builder().mensaje("Error al eliminar").object(null).build(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }

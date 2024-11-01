@@ -103,7 +103,7 @@ public class ControladorPPFF {
 			PPFF pf1 = service.Guardar(pf);
 			PPFFDTO pfdto = mapper.map(pf1, PPFFDTO.class);
 			return new ResponseEntity<>(MensajeResponse.builder()
-					.mensaje("Se agrego correctamente el padre")
+					.mensaje("Se actualizó correctamente el padre")
 					.object(pfdto).build(),HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(MensajeResponse.builder().
@@ -126,13 +126,16 @@ public class ControladorPPFF {
 
 	@DeleteMapping("/eliminarPPFF/{Id_ppff}")
 	public ResponseEntity<?> delete(@PathVariable ("Id_ppff") int Id_ppff) {
-		PPFF pf = service.listarId(Id_ppff);
-		if(pf == null) {
-			throw new ModeloNotFoundException("id personal no encontrado"+Id_ppff);
+		try {
+			PPFF pf = service.listarId(Id_ppff);
+			if (pf == null) {
+				return new ResponseEntity<>(MensajeResponse.builder().mensaje("Id no encontrado").object(null).build(), HttpStatus.NOT_FOUND);
+			}
+			service.Borrar(Id_ppff);
+			return new ResponseEntity<>(MensajeResponse.builder().mensaje("Eliminado correctamente").object(pf).build(), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(MensajeResponse.builder().mensaje("Error al eliminar").object(null).build(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		service.Borrar(Id_ppff);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		
 	}
 	
 	 //INGRESO PPFF
@@ -220,7 +223,7 @@ public class ControladorPPFF {
 			IngresoPPFF ipf1 = serviceI.Guardar(ipf);
 			IngresoPPFFDTO ipfdto = mapper.map(ipf1, IngresoPPFFDTO.class);
 			return new ResponseEntity<>(MensajeResponse.builder()
-					.mensaje("Se agrego correctamente el ingreso personal")
+					.mensaje("Se agrego correctamente el ingreso padre")
 					.object(ipfdto).build(),HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(MensajeResponse.builder().
@@ -235,7 +238,7 @@ public class ControladorPPFF {
 			IngresoPPFF ipf1 = serviceI.Guardar(ipf);
 			IngresoPPFFDTO ipfdto = mapper.map(ipf1, IngresoPPFFDTO.class);
 			return new ResponseEntity<>(MensajeResponse.builder()
-					.mensaje("Se agrego correctamente el ingreso personal")
+					.mensaje("Se actualizó correctamente el ingreso padre")
 					.object(ipfdto).build(),HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(MensajeResponse.builder().
@@ -258,12 +261,15 @@ public class ControladorPPFF {
 
 	@DeleteMapping("/eliminarIPPFF/{id_ingresoPPFF}")
 	public ResponseEntity<?> deleteI( @PathVariable ("id_ingresoPPFF") int id_ingresoPPFF) {
-		IngresoPPFF ipf = serviceI.listarId(id_ingresoPPFF);
-		if(ipf == null) {
-			throw new ModeloNotFoundException("ID NO ECONTRADO : "+id_ingresoPPFF);
+		try{
+			IngresoPPFF ipf = serviceI.listarId(id_ingresoPPFF);
+			if(ipf == null) {
+				return new ResponseEntity<>(MensajeResponse.builder().mensaje("ID no encontrado").object(null).build(), HttpStatus.NOT_FOUND);
+			}
+			serviceI.Borrar(id_ingresoPPFF);
+			return new ResponseEntity<>(MensajeResponse.builder().mensaje("Eliminado correctamente").object(ipf).build(), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(MensajeResponse.builder().mensaje("Error al eliminar").object(null).build(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		serviceI.Borrar(id_ingresoPPFF);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		
 	}
 }

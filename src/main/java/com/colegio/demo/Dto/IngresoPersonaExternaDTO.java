@@ -26,18 +26,14 @@ public class IngresoPersonaExternaDTO {
 		super();
 	}
 
-	public IngresoPersonaExternaDTO(int id_ingresoPersonaE, LocalDate fecha, LocalTime hora_ingreso,
-									LocalTime hora_salida, String asunto, int numeroRegistro) {
+	public IngresoPersonaExternaDTO(int id_ingresoPersonaE, LocalDate fecha, LocalTime hora_ingreso, LocalTime hora_salida, String asunto, int numeroRegistro, PersonaExternaDTO personaE) {
 		super();
 		this.id_ingresoPersonaE = id_ingresoPersonaE;
-		
 		this.fecha = fecha;
 		this.hora_ingreso = hora_ingreso;
 		this.hora_salida = hora_salida;
 		this.asunto = asunto;
 		this.numeroRegistro = numeroRegistro;
+		this.personaE = personaE;
 	}
-
-
-
 }
