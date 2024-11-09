@@ -166,7 +166,7 @@ public class ControladorPE {
 								.mensaje("No hay ingresos registrados para los parámetros proporcionados.")
 								.object(null)
 								.build(),
-						HttpStatus.NO_CONTENT
+						HttpStatus.OK
 				);
 			}
 			// Convertir a DTO
