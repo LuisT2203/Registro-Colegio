@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.colegio.demo.modelo.Usuario;
 import com.colegio.demo.response.LoginResponse;
 import com.colegio.demo.Dto.LoginDTO;
-import com.colegio.demo.Dto.UsuarioDTO;
 
 import com.colegio.demo.interfaces.UsuarioRepository;
 import com.colegio.demo.interfacesService.IUsuarioService;
@@ -24,7 +23,7 @@ public class UsuarioService implements IUsuarioService {
     private PasswordEncoder passwordEncoder;
 
 	@Override
-	public String addUsuario(UsuarioDTO usuarioDTO) {
+	public Usuario addUsuario(Usuario usuarioDTO) {
 		
 		Usuario usuario = new Usuario(
 				
@@ -36,9 +35,10 @@ public class UsuarioService implements IUsuarioService {
 				
 				);
 		repository.save(usuario);
-		
-		return usuario.getUsuario();
-	}
+
+
+        return usuario;
+    }
 	
 		
 		  

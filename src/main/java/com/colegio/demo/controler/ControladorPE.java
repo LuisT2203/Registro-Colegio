@@ -1,5 +1,6 @@
 package com.colegio.demo.controler;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,8 +13,10 @@ import com.colegio.demo.modelo.*;
 import com.colegio.demo.utils.MensajeResponse;
 import com.colegio.demo.utils.ModeloNotFoundException;
 import jakarta.validation.Valid;
+import net.sf.jasperreports.engine.JRException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -268,6 +271,17 @@ public class ControladorPE {
 		} catch (Exception e) {
 			return new ResponseEntity<>(MensajeResponse.builder().mensaje("Error al eliminar").object(null).build(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	@GetMapping("/export-pdf/{id}")
+	public ResponseEntity<byte[]> exportPdfID(@PathVariable("id") int id_personaE) throws JRException, FileNotFoundException {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_PDF);
+		headers.setContentDispositionFormData("personalReport", "personalReport_" + id_personaE + ".pdf");
+
+		// Llama al servicio pasando el ID
+		byte[] pdfReport = serviceI.exportPdfID(id_personaE);
+
+		return ResponseEntity.ok().headers(headers).body(pdfReport);
 	}
 
 }

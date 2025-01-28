@@ -1,8 +1,12 @@
 package com.colegio.demo.service;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.colegio.demo.modelo.IngresoPersonalColegio;
+import com.colegio.demo.utils.PersonalReportGenerator;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +19,8 @@ import com.colegio.demo.modelo.IngresoPersonaExterna;
 public class IngresoPEService implements IIngresoPersonaExternaService {
 	@Autowired
 	private IIngresoPE data;
+	@Autowired
+	private PersonalReportGenerator personalReportGenerator;
 	@Override
 	public List<IngresoPersonaExterna> listarIngresoPE() {
 		return (List<IngresoPersonaExterna>)data.findAll();
@@ -53,5 +59,21 @@ public class IngresoPEService implements IIngresoPersonaExternaService {
 		
 		return data.BuscarPersonalId(id_personaE);
 	}
+
+	@Override
+	public byte[] exportPdf() throws JRException, FileNotFoundException {
+		List<IngresoPersonaExterna> personalList = (List<IngresoPersonaExterna>) data.findAll();
+		return personalReportGenerator.exportToPdfPE(personalList);
+	}
+
+
+
+	@Override
+	public byte[] exportPdfID(int id_personaE) throws JRException, FileNotFoundException {
+		List<IngresoPersonaExterna> personalList = data.BuscarPersonalId(id_personaE);
+		// Generar el Excel basado en la lista filtrada
+		return personalReportGenerator.exportToPdfPE(personalList);
+	}
+
 
 }

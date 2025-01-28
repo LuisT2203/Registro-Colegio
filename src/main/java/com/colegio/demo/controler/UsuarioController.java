@@ -2,8 +2,11 @@ package com.colegio.demo.controler;
 
 import java.util.Map;
 
+import com.colegio.demo.utils.MensajeResponse;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,11 +47,26 @@ public class UsuarioController {
     
     @Autowired
     private JwtUtilService jwtUtilService;
+	@Autowired
+	private ModelMapper mapper;
     
-    @PostMapping(path="/save")
-    public String saveUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-    	String id = serviceU.addUsuario(usuarioDTO);
-    	return id;
+    @PostMapping(path="/save",consumes= MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> saveUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+		try {
+			Usuario usu = mapper.map(usuarioDTO, Usuario.class);
+			Usuario usu1 = serviceU.addUsuario(usu);
+			UsuarioDTO usudto = mapper.map(usu1, UsuarioDTO.class);
+			return new ResponseEntity<>(MensajeResponse.builder()
+					.mensaje("Se agrego correctamente el Usuario")
+					.object(usudto).build(),HttpStatus.CREATED);
+
+		}catch (Exception e) {
+			return new ResponseEntity<>(MensajeResponse.builder().
+					mensaje(e.getMessage()).object(null).build(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
+
     	
     }
 

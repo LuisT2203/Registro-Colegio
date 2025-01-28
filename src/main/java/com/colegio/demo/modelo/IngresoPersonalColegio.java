@@ -40,6 +40,12 @@ public class IngresoPersonalColegio {
 		this.numeroRegistro = numeroRegistro;
 		this.personal = personal;
 	}
+	public String getNombre() {
+		return this.personal!= null ? this.personal.getNombre_personal(): "-----";
+	}
+	public String getApellido() {
+		return this.personal!= null ? this.personal.getApellido_personal(): "-----";
+	}
 
 	public int getId_ingresoPersonal() {
 		return id_ingresoPersonal;
