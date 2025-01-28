@@ -2,9 +2,7 @@ package com.colegio.demo.Dto;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -16,7 +14,8 @@ public class PersonaExternaDTO {
 	@NotBlank(message = "El apellido no puede ser vacío")
 	private String apellido_personaE;
 	@NotNull(message = "El dni  no puede ser vacío")
-	@Size(max = 8,min = 8)
+	@Min(value = 10000000, message = "El dni debe tener exactamente 8 dígitos")
+	@Max(value = 99999999, message = "El dni debe tener exactamente 8 dígitos")
 	private int dni;
 	
 	public PersonaExternaDTO() {
