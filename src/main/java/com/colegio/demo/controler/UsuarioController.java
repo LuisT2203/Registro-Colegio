@@ -27,7 +27,7 @@ import com.colegio.demo.Dto.UsuarioDTO;
 import com.colegio.demo.interfaces.UsuarioRepository;
 
 @RestController
-@RequestMapping("/api/usuario")
+@RequestMapping(value="/api/usuario", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 public class UsuarioController {
 

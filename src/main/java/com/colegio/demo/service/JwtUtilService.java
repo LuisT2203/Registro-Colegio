@@ -18,8 +18,8 @@ import java.util.Date;
 @Service
 public class JwtUtilService {
     private static final String JWT_SECRET_KEY = "TExBVkVfTVVZX1NFQ1JFVEzE3Zmxu7BSGSJx72BSBXM";
-    private static final long JWT_TIME_VALIDITY = 1000 * 60 * 60 * 24;
-    private static final long JWT_TIME_REFRESH_VALIDATE = 1000 * 60 * 60 * 24 * 7;
+    private static final long JWT_TIME_VALIDITY = 1000 * 60 * 60; // 1 hora
+    private static final long JWT_TIME_REFRESH_VALIDATE = 1000 * 60 * 60 * 24 * 7; // 7 días
 
     public String generateToken(UserDetails userDetails,String tipo) {
         return Jwts.builder()
