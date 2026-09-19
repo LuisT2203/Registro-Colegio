@@ -101,6 +101,7 @@ Tras cargar el seed:
 
 ## Documentación del proyecto
 
+- [`docs/00-analisis/Documentacion_Analisis_Diseno.md`](docs/00-analisis/Documentacion_Analisis_Diseno.md) — análisis y diseño completo: requerimientos (RF/RNF), casos de uso (CUN/CUS/ECUS), modelo conceptual y relacional, normalización y diagramas UML. ([PDF](docs/00-analisis/Documentacion_Analisis_Diseno.pdf))
 - [`docs/DECISIONES.md`](docs/DECISIONES.md) — decisiones de diseño y sus tradeoffs.
 - [`docs/Diagrama_BD.png`](docs/Diagrama_BD.png) — diagrama de la base de datos.
 
