@@ -16,7 +16,10 @@ public class CorsConfig {
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowCredentials(true);
-		configuration.setAllowedOrigins(Arrays.asList("https://registro-colegio-angular.vercel.app,https://registro-colegio-angular-azure.vercel.app"));
+		configuration.setAllowedOrigins(Arrays.asList("https://registro-colegio-angular.vercel.app," +
+				"https://registro-colegio-angular-azure.vercel.app," +
+				"http://localhost:4200," +
+				"http://192.168.18.22:4200"));
 		configuration.setAllowedMethods(Arrays.asList("*"));
 		configuration.setAllowedHeaders(Arrays.asList("*"));
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

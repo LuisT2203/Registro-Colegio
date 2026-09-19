@@ -1,11 +1,10 @@
 package com.colegio.demo.Dto;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
-import java.time.LocalDate;
 
 @Data
 public class EncargoDTO {
@@ -14,27 +13,19 @@ public class EncargoDTO {
 	@NotNull(message = "La fecha no puede ser vacía")
 	private LocalDate fecha_enc;
 	@NotBlank(message = "El Encargo no puede ser vacío")
-	private String encargoNom;
-	private int numeroRegistro;
-	
-	
-	
-	
+	private String encargo;
+	private int numero_registro;
+
 	public EncargoDTO() {
 		super();
 	}
-	
-	
-	public EncargoDTO(int id_enc, LocalDate fecha_enc, String encargoNom, int numeroRegistro) {
+
+	public EncargoDTO(int id_enc, LocalDate fecha_enc, String encargo, int numero_registro) {
 		super();
 		this.id_enc = id_enc;
 		this.fecha_enc = fecha_enc;
-		this.encargoNom = encargoNom;
-		this.numeroRegistro = numeroRegistro;
+		this.encargo = encargo;
+		this.numero_registro = numero_registro;
 	}
-
-
-	
-
 
 }

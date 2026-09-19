@@ -8,9 +8,8 @@ import com.colegio.demo.modelo.Encargo;
 public interface IEncargoService {
 	public List<Encargo> ListarEncargos();
 	public Encargo listarID(int id_enc);
-	public Encargo Guardar (Encargo enc);
+	public Encargo Guardar(Encargo enc);
 	public Encargo Borrar(int id_enc);
-	List<Encargo> ListarEncargoPorFecha (LocalDate fecha_enc);
-	List<Encargo> ListarEncargoPorNombre(String Encargo);
-
+	public List<Encargo> ListarEncargoPorFecha(LocalDate fecha_enc);
+	public List<Encargo> ListarEncargoPorNombre(String encargo);
 }

@@ -1,20 +1,19 @@
 package com.colegio.demo.interfaces;
 
-import com.colegio.demo.modelo.IngresoPersonalColegio;
-import com.colegio.demo.modelo.SalidasAlumnas;
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
-import java.util.List;
+import com.colegio.demo.modelo.SalidasAlumnas;
 
 public interface ISalidasAlumnas extends CrudRepository<SalidasAlumnas, Integer> {
 
-    // Query personalizado para obtener ingresos por fecha
-    @Query("SELECT i FROM SalidasAlumnas i WHERE i.fecha = :fecha")
-    List<SalidasAlumnas> listarSalidasPorFecha(@Param("fecha") LocalDate fecha);
+	@Query("SELECT s FROM SalidasAlumnas s JOIN FETCH s.alumna WHERE s.fecha = :fecha")
+	List<SalidasAlumnas> listarSalidasPorFecha(@Param("fecha") LocalDate fecha);
 
-    @Query("FROM SalidasAlumnas sa WHERE sa.nombre_alu like %:nombre_alu%")
-    List<SalidasAlumnas> BuscarAlumnaNombre(@Param("nombre_alu") String nombre_alu);
+	@Query("SELECT s FROM SalidasAlumnas s JOIN FETCH s.alumna WHERE s.alumna.id_persona = :idAlumna")
+	List<SalidasAlumnas> BuscarAlumnaId(@Param("idAlumna") int idAlumna);
 }

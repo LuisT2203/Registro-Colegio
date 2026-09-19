@@ -9,15 +9,16 @@ import org.springframework.stereotype.Service;
 import com.colegio.demo.interfaces.IEncargo;
 import com.colegio.demo.interfacesService.IEncargoService;
 import com.colegio.demo.modelo.Encargo;
+
 @Service
 public class EncargoService implements IEncargoService {
-	
+
 	@Autowired
 	private IEncargo repo;
-	
+
 	@Override
 	public List<Encargo> ListarEncargos() {
-		return (List<Encargo>)repo.findAll();
+		return (List<Encargo>) repo.findAll();
 	}
 
 	@Override
@@ -34,9 +35,9 @@ public class EncargoService implements IEncargoService {
 	@Override
 	public Encargo Borrar(int id_enc) {
 		Encargo temp = repo.findById(id_enc).orElse(null);
-		if(temp==null) {
+		if (temp == null) {
 			return new Encargo();
-		}else {
+		} else {
 			repo.deleteById(id_enc);
 			return temp;
 		}
@@ -48,8 +49,8 @@ public class EncargoService implements IEncargoService {
 	}
 
 	@Override
-	public List<Encargo> ListarEncargoPorNombre(String Encargo) {
-		return repo.ListarEncargosPorNombre(Encargo);
+	public List<Encargo> ListarEncargoPorNombre(String encargo) {
+		return repo.ListarEncargosPorNombre(encargo);
 	}
 
 }
